@@ -13,6 +13,7 @@ $db = $database->getConnection();
 $enterpriseBusiness = new EnterpriseBusiness($db);
 
 $request_method = $_SERVER['REQUEST_METHOD'];
+$id = isset($_GET['id']) ? intval($_GET['id']) : null;
 
 function sendResponse($status_code, $message) {
     http_response_code($status_code);
@@ -22,8 +23,17 @@ function sendResponse($status_code, $message) {
 try {
     switch ($request_method) {
         case 'GET':
-            $enterprises = $enterpriseBusiness->getEnterprises();
-            echo json_encode($enterprises);
+            if ($id !== null) {
+                $enterprise = $enterpriseBusiness->getEnterpriseById($id);
+                if ($enterprise) {
+                    echo json_encode($enterprise);
+                } else {
+                    sendResponse(404, 'Empresa no encontrada.');
+                }
+            } else {
+                $enterprises = $enterpriseBusiness->getEnterprises();
+                echo json_encode($enterprises);
+            }
             break;
         case 'POST':
             $data = json_decode(file_get_contents("php://input"));

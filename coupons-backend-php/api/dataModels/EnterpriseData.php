@@ -10,12 +10,20 @@ class EnterpriseData {
         $this->conn = $db;
     }
 
-    public function read() {
+    public function getEnterprises() {
         $query = 'SELECT * FROM ' . $this->table_name;
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
     }
+
+    public function getEnterpriseById($id) {
+        $query = 'SELECT * FROM ' . $this->table_name . ' WHERE id_enterprise = :id_enterprise';
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id_enterprise', $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }    
 
     public function create($enterprise) {
         $query = 'INSERT INTO ' . $this->table_name . ' SET name=:name, address=:address, license=:license, date_created=:date_created, phone=:phone, email=:email, password=:password, is_enabled=:is_enabled';

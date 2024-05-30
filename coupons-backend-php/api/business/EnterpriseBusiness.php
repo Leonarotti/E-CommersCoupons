@@ -9,7 +9,7 @@ class EnterpriseBusiness {
     }
 
     public function getEnterprises() {
-        $stmt = $this->enterpriseData->read();
+        $stmt = $this->enterpriseData->getEnterprises();
         $enterprises_arr = array();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
@@ -18,6 +18,15 @@ class EnterpriseBusiness {
         }
         return $enterprises_arr;
     }
+
+    public function getEnterpriseById($id) {
+        $data = $this->enterpriseData->getEnterpriseById($id);
+        if ($data) {
+            return new Enterprise($data['id_enterprise'], $data['name'], $data['address'], $data['license'], $data['date_created'], $data['phone'], $data['email'], $data['password'], $data['is_enabled']);
+        } else {
+            return null;
+        }
+    }    
 
     public function createEnterprise($data) {
         $validationResult = $this->validateEnterpriseData($data);
