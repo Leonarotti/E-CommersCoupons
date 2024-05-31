@@ -68,13 +68,13 @@ const EnterpriseManagement = () => {
         });
     };
 
-    const handleDelete = (id) => {
-        enterpriseService.deleteEnterprise(id).then(() => {
-            loadEnterprises();
-        }).catch(error => {
-            console.error("Error deleting enterprise:", error);
-        });
-    };
+    // const handleDelete = (id) => {
+    //     enterpriseService.deleteEnterprise(id).then(() => {
+    //         loadEnterprises();
+    //     }).catch(error => {
+    //         console.error("Error deleting enterprise:", error);
+    //     });
+    // };
 
     const openModal = () => {
         setModalIsOpen(true);
@@ -123,7 +123,7 @@ const EnterpriseManagement = () => {
                                     {enterprise.is_enabled ? 'Disable' : 'Enable'}
                                 </button>
                                 <button onClick={() => handleEdit(enterprise)}>Edit</button>
-                                <button onClick={() => handleDelete(enterprise.id_enterprise)}>Delete</button>
+                                {/* <button onClick={() => handleDelete(enterprise.id_enterprise)}>Delete</button> */}
                             </td>
                         </tr>
                     ))}
