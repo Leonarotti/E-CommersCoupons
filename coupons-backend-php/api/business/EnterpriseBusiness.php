@@ -70,9 +70,9 @@ class EnterpriseBusiness {
         if (!filter_var($data->email, FILTER_VALIDATE_EMAIL)) {
             return 'Correo electrónico inválido.';
         }
-        if (!preg_match('/^\d{2}-\d{3,4}-\d{4,7}$/', $data->license)) {
+        if (!preg_match('/^\d{2}-(?:\d{3}-\d{6}|\d{4}-\d{4})$/', $data->license)) {
             return 'Formato de número de licencia inválido. Debe ser "00-0000-0000" para cédulas físicas o "00-000-000000" para cédulas jurídicas.';
-        }
+        }        
         if (!preg_match('/^\d{4}-\d{4}$/', $data->phone)) {
             return 'Formato de número de teléfono inválido. Debe ser "0000-0000".';
         }
