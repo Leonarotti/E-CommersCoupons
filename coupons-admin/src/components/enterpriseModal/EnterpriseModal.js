@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import './Modal.css';
 
-const EnterpriseModal = ({ isOpen, onRequestClose, enterprise, handleChange, handleSubmit, editMode }) => {
+const EnterpriseModal = ({ isOpen, onRequestClose, enterprise, handleChange, handleSubmit, editMode, backendErrors }) => {
     const [errors, setErrors] = useState({});
 
     const formatLicense = (value) => {
@@ -67,20 +67,35 @@ const EnterpriseModal = ({ isOpen, onRequestClose, enterprise, handleChange, han
                     handleSubmit(e);
                 }
             }}>
+                {/* Input para el nombre */}
                 <input type="text" name="name" placeholder="Name" value={enterprise.name} onChange={handleChange} required />
                 {errors.name && <span className="error">{errors.name}</span>}
+                {backendErrors.name && <span className="error">{backendErrors.name}</span>}
+
+                {/* Input para la dirección */}
                 <input type="text" name="address" placeholder="Address" value={enterprise.address} onChange={handleChange} required />
                 {errors.address && <span className="error">{errors.address}</span>}
+                {backendErrors.address && <span className="error">{backendErrors.address}</span>}
+                {/* Input para la licencia */}
                 <input type="text" name="license" placeholder="License" value={enterprise.license} onChange={handleChangeWithFormat} required />
                 {errors.license && <span className="error">{errors.license}</span>}
+                {backendErrors.license && <span className="error">{backendErrors.license}</span>}
+                {/* Mostrar errores del backend para la licencia */}
+                {Object.keys(backendErrors).map((key, index) => (
+                    <span className="error" key={index}>{backendErrors[key]}</span>
+                ))}
                 <input type="date" name="date_created" placeholder="Date Created" value={enterprise.date_created} onChange={handleChange} required />
                 {errors.date_created && <span className="error">{errors.date_created}</span>}
+                {backendErrors.date_created && <span className="error">{backendErrors.date_created}</span>}
                 <input type="text" name="phone" placeholder="Phone" value={enterprise.phone} onChange={handleChangeWithFormat} required />
                 {errors.phone && <span className="error">{errors.phone}</span>}
+                {backendErrors.phone && <span className="error">{backendErrors.phone}</span>}
                 <input type="email" name="email" placeholder="Email" value={enterprise.email} onChange={handleChange} required />
                 {errors.email && <span className="error">{errors.email}</span>}
+                {backendErrors.email && <span className="error">{backendErrors.email}</span>}
                 {!editMode && <input type="password" name="password" placeholder="Password" value={enterprise.password} onChange={handleChange} required />}
                 {errors.password && <span className="error">{errors.password}</span>}
+                {backendErrors.password && <span className="error">{backendErrors.password}</span>}
                 <label>
                     <input type="checkbox" name="is_enabled" checked={enterprise.is_enabled} onChange={(e) => handleChange({ target: { name: 'is_enabled', value: e.target.checked } })} />
                     Enabled

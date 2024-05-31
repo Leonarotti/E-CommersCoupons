@@ -17,6 +17,7 @@ const EnterpriseManagement = () => {
         password: '',
         is_enabled: true
     });
+    const [backendErrors, setBackendErrors] = useState({});
 
     useEffect(() => {
         loadEnterprises();
@@ -37,22 +38,35 @@ const EnterpriseManagement = () => {
 
     const handleCreateOrUpdate = (e) => {
         e.preventDefault();
+        setBackendErrors({});
         if (editMode) {
-            enterpriseService.updateEnterprise(newEnterprise).then(() => {
-                loadEnterprises();
-                closeModal();
+            enterpriseService.updateEnterprise(newEnterprise).then(response => {
+                if (response.status === 200) {
+                    loadEnterprises();
+                    closeModal();
+                } else {
+                    setBackendErrors(response);
+                }
             }).catch(error => {
                 console.error("Error updating enterprise:", error);
+                setBackendErrors(error); // Maneja el error y lo muestra en el componente
             });
         } else {
-            enterpriseService.createEnterprise(newEnterprise).then(() => {
-                loadEnterprises();
-                closeModal();
+            enterpriseService.createEnterprise(newEnterprise).then(response => {
+                if (response.status === 201) {
+                    loadEnterprises();
+                    closeModal();
+                } else {
+                    setBackendErrors(response);
+                    console.error("Error creating enterprise:", response);
+                }
             }).catch(error => {
                 console.error("Error creating enterprise:", error);
+                setBackendErrors(error); // Maneja el error y lo muestra en el componente
             });
         }
     };
+    
 
     const handleEdit = (enterprise) => {
         setNewEnterprise(enterprise);
@@ -93,6 +107,7 @@ const EnterpriseManagement = () => {
             is_enabled: true
         });
         setEditMode(false);
+        setBackendErrors({});
     };
 
     return (
@@ -137,6 +152,7 @@ const EnterpriseManagement = () => {
                 handleChange={handleChange}
                 handleSubmit={handleCreateOrUpdate}
                 editMode={editMode}
+                backendErrors={backendErrors} // Pasar los errores del backend al modal
             />
         </div>
     );

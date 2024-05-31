@@ -11,18 +11,22 @@ const getEnterpriseById = (id) => {
 };
 
 const createEnterprise = (enterprise) => {
-    return axios.post(API_URL, enterprise);
+    return axios.post(API_URL, enterprise)
+        .then(response => response)
+        .catch(error => Promise.reject(error.response.data)); // Devuelve el error completo
 };
 
 const updateEnterprise = (enterprise) => {
-    return axios.put(API_URL, enterprise);
+    return axios.put(`${API_URL}/${enterprise.id_enterprise}`, enterprise)
+        .then(response => response)
+        .catch(error => error.response);
 };
 
-const deleteEnterprise = (id) => {
-    return axios.delete(API_URL, {
-        data: { id_enterprise: id }
-    });
-};
+// const deleteEnterprise = (id) => {
+//     return axios.delete(API_URL, {
+//         data: { id_enterprise: id }
+//     });
+// };
 
 const setEnterpriseEnabled = (id, isEnabled) => {
     return axios.put(API_URL, { id_enterprise: id, is_enabled: isEnabled });
@@ -33,7 +37,7 @@ const enterpriseService = {
     getEnterpriseById,
     createEnterprise,
     updateEnterprise,
-    deleteEnterprise,
+    // deleteEnterprise,
     setEnterpriseEnabled
 };
 
