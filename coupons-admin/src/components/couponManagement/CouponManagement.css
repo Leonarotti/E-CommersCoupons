@@ -1,15 +1,14 @@
-/* src/components/enterpriseManagement/EnterpriseManagement.css */
 
-.enterprise-management {
+.coupon-management {
     padding: 20px;
 }
 
-.enterprise-management h1 {
+.coupon-management h1 {
     font-size: 24px;
     margin-bottom: 20px;
 }
 
-.enterprise-management button {
+.coupon-management button {
     padding: 10px 15px;
     margin-bottom: 20px;
     background-color: #006adb;
@@ -19,27 +18,27 @@
     border-radius: 5px;
 }
 
-.enterprise-management button:hover {
+.coupon-management button:hover {
     background-color: #0056b3;
 }
 
-.enterprise-management table {
+.coupon-management table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
 }
 
-.enterprise-management th, .enterprise-management td {
+.coupon-management th, .coupon-management td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
 }
 
-.enterprise-management th {
+.coupon-management th {
     background-color: #f4f4f4;
 }
 
-.enterprise-management td button {
+.coupon-management td button {
     padding: 5px 10px;
     margin-right: 5px;
     background-color: #28a745;
@@ -49,6 +48,6 @@
     border-radius: 5px;
 }
 
-.enterprise-management td button:hover {
+.coupon-management td button:hover {
     background-color: #218838;
 }

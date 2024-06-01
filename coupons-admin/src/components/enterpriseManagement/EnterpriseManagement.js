@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import enterpriseService from '../../services/EnterpriseService';
 import EnterpriseModal from '../enterpriseModal/EnterpriseModal';
 import './EnterpriseManagement.css';
@@ -18,6 +19,8 @@ const EnterpriseManagement = () => {
         is_enabled: true
     });
     const [backendErrors, setBackendErrors] = useState({});
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         loadEnterprises();
@@ -66,7 +69,6 @@ const EnterpriseManagement = () => {
             });
         }
     };
-    
 
     const handleEdit = (enterprise) => {
         setNewEnterprise(enterprise);
@@ -82,13 +84,9 @@ const EnterpriseManagement = () => {
         });
     };
 
-    // const handleDelete = (id) => {
-    //     enterpriseService.deleteEnterprise(id).then(() => {
-    //         loadEnterprises();
-    //     }).catch(error => {
-    //         console.error("Error deleting enterprise:", error);
-    //     });
-    // };
+    const handleManageEnterprise = (id) => {
+        navigate(`/enterprises/${id}`);
+    };
 
     const openModal = () => {
         setModalIsOpen(true);
@@ -138,7 +136,7 @@ const EnterpriseManagement = () => {
                                     {enterprise.is_enabled ? 'Disable' : 'Enable'}
                                 </button>
                                 <button onClick={() => handleEdit(enterprise)}>Edit</button>
-                                {/* <button onClick={() => handleDelete(enterprise.id_enterprise)}>Delete</button> */}
+                                <button onClick={() => handleManageEnterprise(enterprise.id_enterprise)}>Manage</button>
                             </td>
                         </tr>
                     ))}

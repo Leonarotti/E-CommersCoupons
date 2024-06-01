@@ -1,0 +1,55 @@
+.enterprise-details {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0;
+}
+
+.enterprise-details h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.enterprise-details form {
+    margin-bottom: 20px;
+}
+
+.enterprise-details form h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.enterprise-details form input,
+.enterprise-details form label {
+    display: block;
+    padding: 7px 10px;
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.enterprise-details form input[type="checkbox"] {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.enterprise-details form p {
+    margin: 5px 0;
+}
+
+.enterprise-details button {
+    padding: 10px 15px;
+    background-color: #006adb;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.enterprise-details button:hover {
+    background-color: #0056b3;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
