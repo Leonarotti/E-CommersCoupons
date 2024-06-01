@@ -9,3 +9,37 @@ CREATE TABLE enterprise (
     password VARCHAR(255) NOT NULL,
     is_enabled BOOLEAN NOT NULL
 );
+
+CREATE TABLE category (
+    id_category INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+
+CREATE TABLE coupon (
+    id_coupon INT PRIMARY KEY AUTO_INCREMENT,
+    id_enterprise INT NOT NULL,
+    id_category INT NOT NULL,
+    code VARCHAR(255) NOT NULL UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    img VARCHAR(255) NOT NULL,
+    location VARCHAR(200) NOT NULL,
+    regular_price DECIMAL(10,2) NOT NULL,
+    percentage INT NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    is_enabled BOOLEAN NOT NULL DEFAULT 1,
+    FOREIGN KEY (id_enterprise) REFERENCES enterprise(id_enterprise),
+    FOREIGN KEY (id_category) REFERENCES category(id_category)
+);
+
+
+CREATE TABLE promotion (
+    id_promotion INT PRIMARY KEY AUTO_INCREMENT,
+    id_coupon INT NOT NULL,
+    percentage INT NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    is_enabled BOOLEAN NOT NULL DEFAULT 1,
+    FOREIGN KEY (id_coupon) REFERENCES coupon(id_coupon)
+);

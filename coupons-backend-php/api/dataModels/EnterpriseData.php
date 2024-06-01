@@ -25,6 +25,14 @@ class EnterpriseData {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }    
 
+    public function getEnterpriseByLicense($license) {
+        $query = 'SELECT * FROM ' . $this->table_name . ' WHERE license = :license';
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':license', $license);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }    
+
     public function create($enterprise) {
         $query = 'INSERT INTO ' . $this->table_name . ' SET name=:name, address=:address, license=:license, date_created=:date_created, phone=:phone, email=:email, password=:password, is_enabled=:is_enabled';
         $stmt = $this->conn->prepare($query);

@@ -10,12 +10,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 include_once '../config/Database.php';
-include_once '../business/EnterpriseBusiness.php';
+include_once '../business/CategoryBusiness.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
-$enterpriseBusiness = new EnterpriseBusiness($db);
+$categoryBusiness = new CategoryBusiness($db);
 
 $request_method = $_SERVER['REQUEST_METHOD'];
 $id = isset($_GET['id']) ? intval($_GET['id']) : null;
@@ -29,51 +29,40 @@ try {
     switch ($request_method) {
         case 'GET':
             if ($id !== null) {
-                $enterprise = $enterpriseBusiness->getEnterpriseById($id);
-                if ($enterprise) {
-                    echo json_encode($enterprise);
+                $category = $categoryBusiness->getCategoryById($id);
+                if ($category) {
+                    echo json_encode($category);
                 } else {
-                    sendResponse(404, 'Empresa no encontrada.');
+                    sendResponse(404, 'Categoría no encontrada.');
                 }
             } else {
-                $enterprises = $enterpriseBusiness->getEnterprises();
-                echo json_encode($enterprises);
+                $categories = $categoryBusiness->getCategories();
+                echo json_encode($categories);
             }
             break;
         case 'POST':
             $data = json_decode(file_get_contents("php://input"));
-            $result = $enterpriseBusiness->createEnterprise($data);
+            $result = $categoryBusiness->create($data);
             if ($result === true) {
-                sendResponse(201, 'Empresa creada.');
+                sendResponse(201, 'Categoría creada.');
             } else {
                 sendResponse(400, $result);
             }
             break;
         case 'PUT':
             $data = json_decode(file_get_contents("php://input"));
-            if (!isset($data->license)) {
-                // Enable or disable enterprise
-                $result = $enterpriseBusiness->setEnterpriseEnabled($data->id_enterprise, $data->is_enabled);
-                if ($result === true) {
-                    sendResponse(200, 'Estado de empresa actualizado.');
-                } else {
-                    sendResponse(400, $result);
-                }
+            $result = $categoryBusiness->update($data);
+            if ($result === true) {
+                sendResponse(200, 'Categoría actualizada.');
             } else {
-                // Update enterprise
-                $result = $enterpriseBusiness->updateEnterprise($data);
-                if ($result === true) {
-                    sendResponse(200, 'Empresa actualizada.');
-                } else {
-                    sendResponse(400, $result);
-                }
+                sendResponse(400, $result);
             }
             break;
         case 'DELETE':
             $data = json_decode(file_get_contents("php://input"));
-            $result = $enterpriseBusiness->deleteEnterprise($data->id_enterprise);
+            $result = $categoryBusiness->delete($data->id_category);
             if ($result === true) {
-                sendResponse(200, 'Empresa eliminada.');
+                sendResponse(200, 'Categoría eliminada.');
             } else {
                 sendResponse(400, $result);
             }

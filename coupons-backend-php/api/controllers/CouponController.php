@@ -10,12 +10,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 include_once '../config/Database.php';
-include_once '../business/EnterpriseBusiness.php';
+include_once '../business/CouponBusiness.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
-$enterpriseBusiness = new EnterpriseBusiness($db);
+$couponBusiness = new CouponBusiness($db);
 
 $request_method = $_SERVER['REQUEST_METHOD'];
 $id = isset($_GET['id']) ? intval($_GET['id']) : null;
@@ -29,41 +29,41 @@ try {
     switch ($request_method) {
         case 'GET':
             if ($id !== null) {
-                $enterprise = $enterpriseBusiness->getEnterpriseById($id);
-                if ($enterprise) {
-                    echo json_encode($enterprise);
+                $coupon = $couponBusiness->getCouponById($id);
+                if ($coupon) {
+                    echo json_encode($coupon);
                 } else {
-                    sendResponse(404, 'Empresa no encontrada.');
+                    sendResponse(404, 'Cupón no encontrado.');
                 }
             } else {
-                $enterprises = $enterpriseBusiness->getEnterprises();
-                echo json_encode($enterprises);
+                $coupons = $couponBusiness->getCoupons();
+                echo json_encode($coupons);
             }
             break;
         case 'POST':
             $data = json_decode(file_get_contents("php://input"));
-            $result = $enterpriseBusiness->createEnterprise($data);
+            $result = $couponBusiness->createCoupon($data);
             if ($result === true) {
-                sendResponse(201, 'Empresa creada.');
+                sendResponse(201, 'Cupón creado.');
             } else {
                 sendResponse(400, $result);
             }
             break;
         case 'PUT':
             $data = json_decode(file_get_contents("php://input"));
-            if (!isset($data->license)) {
-                // Enable or disable enterprise
-                $result = $enterpriseBusiness->setEnterpriseEnabled($data->id_enterprise, $data->is_enabled);
+            if (!isset($data->code)) {
+                // Enable or disable coupon
+                $result = $couponBusiness->setCouponEnabled($data->id_coupon, $data->is_enabled);
                 if ($result === true) {
-                    sendResponse(200, 'Estado de empresa actualizado.');
+                    sendResponse(200, 'Estado de cupón actualizado.');
                 } else {
                     sendResponse(400, $result);
                 }
             } else {
-                // Update enterprise
-                $result = $enterpriseBusiness->updateEnterprise($data);
+                // Update coupon
+                $result = $couponBusiness->updateCoupon($data);
                 if ($result === true) {
-                    sendResponse(200, 'Empresa actualizada.');
+                    sendResponse(200, 'Cupón actualizado.');
                 } else {
                     sendResponse(400, $result);
                 }
@@ -71,9 +71,9 @@ try {
             break;
         case 'DELETE':
             $data = json_decode(file_get_contents("php://input"));
-            $result = $enterpriseBusiness->deleteEnterprise($data->id_enterprise);
+            $result = $couponBusiness->deleteCoupon($data->id_coupon);
             if ($result === true) {
-                sendResponse(200, 'Empresa eliminada.');
+                sendResponse(200, 'Cupón eliminado.');
             } else {
                 sendResponse(400, $result);
             }
