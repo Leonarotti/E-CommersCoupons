@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import couponService from '../../services/CouponService';
-import categoryService from '../../services/CategoryService'; // Importar el servicio de categorías
+import categoryService from '../../services/CategoryService';
 import CouponModal from '../couponModal/CouponModal';
 import './CouponManagement.css';
 
@@ -9,7 +9,7 @@ const CouponManagement = () => {
     const { enterpriseId } = useParams();
     const navigate = useNavigate();
     const [coupons, setCoupons] = useState([]);
-    const [categories, setCategories] = useState([]); // Estado para almacenar las categorías
+    const [categories, setCategories] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [newCoupon, setNewCoupon] = useState({
@@ -65,7 +65,7 @@ const CouponManagement = () => {
                 }
             }).catch(error => {
                 console.error("Error updating coupon:", error);
-                setBackendErrors(error.response.data); // Maneja el error y lo muestra en el componente
+                setBackendErrors(error.response.data);
             });
         } else {
             couponService.createCoupon(newCoupon).then(response => {
@@ -78,7 +78,7 @@ const CouponManagement = () => {
                 }
             }).catch(error => {
                 console.error("Error creating coupon:", error);
-                setBackendErrors(error.response.data); // Maneja el error y lo muestra en el componente
+                setBackendErrors(error.response.data);
             });
         }
     };
@@ -87,14 +87,6 @@ const CouponManagement = () => {
         setNewCoupon(coupon);
         setEditMode(true);
         openModal();
-    };
-
-    const handleDelete = (id) => {
-        couponService.deleteCoupon(id).then(() => {
-            loadCoupons();
-        }).catch(error => {
-            console.error("Error deleting coupon:", error);
-        });
     };
 
     const openModal = () => {
@@ -123,6 +115,23 @@ const CouponManagement = () => {
         navigate(`/enterprises/${enterpriseId}`);
     };
 
+    const handleManageCoupon = (couponId) => {
+        navigate(`/enterprises/${enterpriseId}/coupons/${couponId}`);
+    };
+
+    const handleEnableToggle = (id, isEnabled) => {
+        couponService.setCouponEnabled(id, isEnabled).then(() => {
+            loadCoupons();
+        }).catch(error => {
+            console.error("Error toggling coupon enable status:", error);
+        });
+    };
+
+    const getCategoryName = (id) => {
+        const category = categories.find(cat => cat.id_category === id);
+        return category ? category.name : 'Unknown';
+    };
+
     return (
         <div className="coupon-management">
             <button onClick={goBack}>Back to Enterprise</button>
@@ -140,7 +149,6 @@ const CouponManagement = () => {
                         <th>Discount (%)</th>
                         <th>Start Date</th>
                         <th>End Date</th>
-                        <th>Enabled</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -148,16 +156,18 @@ const CouponManagement = () => {
                     {coupons.map(coupon => (
                         <tr key={coupon.id_coupon}>
                             <td>{coupon.name}</td>
-                            <td>{coupon.id_category}</td>
+                            <td>{getCategoryName(coupon.id_category)}</td>
                             <td>{coupon.location}</td>
                             <td>{coupon.regular_price}</td>
-                            <td>{coupon.percentage}</td>
+                            <td>{coupon.percentage + '%'}</td>
                             <td>{coupon.start_date}</td>
                             <td>{coupon.end_date}</td>
-                            <td>{coupon.is_enabled ? 'Yes' : 'No'}</td>
                             <td>
+                                <button onClick={() => handleEnableToggle(coupon.id_coupon, !coupon.is_enabled)}>
+                                    {coupon.is_enabled ? 'Disable' : 'Enable'}
+                                </button>
                                 <button onClick={() => handleEdit(coupon)}>Edit</button>
-                                <button onClick={() => handleDelete(coupon.id_coupon)}>Delete</button>
+                                <button onClick={() => handleManageCoupon(coupon.id_coupon)}>Manage Coupon</button>
                             </td>
                         </tr>
                     ))}
@@ -171,8 +181,8 @@ const CouponManagement = () => {
                 handleChange={handleChange}
                 handleSubmit={handleCreateOrUpdate}
                 editMode={editMode}
-                backendErrors={backendErrors} // Pasar los errores del backend al modal
-                categories={categories} // Pasar las categorías al modal
+                backendErrors={backendErrors}
+                categories={categories}
             />
         </div>
     );

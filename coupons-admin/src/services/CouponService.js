@@ -24,11 +24,21 @@ const deleteCoupon = (id) => {
     });
 };
 
+const getCouponById = (id) => {
+    return axios.get(`${API_URL}?id=${id}`);
+};
+
+const setCouponEnabled = (id, isEnabled) => {
+    return axios.put(API_URL, { id_coupon: id, is_enabled: isEnabled });
+};
+
 const couponService = {
     getCouponsByEnterpriseId,
     createCoupon,
     updateCoupon,
-    deleteCoupon
+    deleteCoupon,
+    getCouponById,
+    setCouponEnabled
 };
 
 export default couponService;

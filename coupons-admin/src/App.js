@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, NavLink } from 'react-router-do
 import EnterpriseManagement from './components/enterpriseManagement/EnterpriseManagement';
 import EnterpriseDetails from './components/enterpriseDetails/EnterpriseDetails';
 import CouponManagement from './components/couponManagement/CouponManagement';
+import CouponDetails from './components/couponDetails/CouponDetails';
 import CategoryManagement from './components/categoryManagement/CategoryManagement';
 import Modal from 'react-modal';
 import './App.css';
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/categories" element={<CategoryManagement />} />
                     <Route path="/enterprises/:id" element={<EnterpriseDetails />} />
                     <Route path="/enterprises/:enterpriseId/coupons" element={<CouponManagement />} />
+                    <Route path="/enterprises/:enterpriseId/coupons/:couponId" element={<CouponDetails />} />
                 </Routes>
             </div>
         </Router>
