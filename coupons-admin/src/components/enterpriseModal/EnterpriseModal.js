@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import './Modal.css';
+import './EnterpriseModal.css';
 
 const EnterpriseModal = ({ isOpen, onRequestClose, enterprise, handleChange, handleSubmit, editMode, backendErrors }) => {
     const [errors, setErrors] = useState({});

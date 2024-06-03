@@ -1,25 +1,6 @@
-nav {
-  background-color: #333;
-  padding: 1em;
-}
-
-nav ul {
-  list-style: none;
-  display: flex;
-  justify-content: space-around;
-  padding: 0;
-}
-
-nav ul li {
-  margin: 0 1em;
-}
-
-nav ul li a {
-  color: white;
-  text-decoration: none;
-}
 
 nav ul li a.active {
+  color: white;
   font-weight: bold;
-  border-bottom: 2px solid white;
 }
+

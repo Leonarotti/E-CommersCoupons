@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import enterpriseService from '../../services/EnterpriseService';
@@ -117,42 +118,45 @@ const EnterpriseManagement = () => {
     };
 
     return (
-        <div className="enterprise-management">
-            <h1>Enterprise Management</h1>
-            <button onClick={openModal}>Create Enterprise</button>
+        <div className="enterprise-management bg-white p-4 rounded shadow-sm">
+            <h1 className="text-center mb-5">Enterprise Management</h1>
+            <div className="d-flex mb-3">
+                <button className= "btn btn-primary" onClick={openModal}>Create Enterprise</button>
+            </div>
 
-            <h2>List of Enterprises</h2>
             {Array.isArray(enterprises) && enterprises.length > 0 ? (
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>License</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {enterprises.map(enterprise => (
-                            <tr key={enterprise.id_enterprise}>
-                                <td>{enterprise.name}</td>
-                                <td>{enterprise.license}</td>
-                                <td>{enterprise.phone}</td>
-                                <td>{enterprise.email}</td>
-                                <td>
-                                    <button onClick={() => handleEnableToggle(enterprise.id_enterprise, !enterprise.is_enabled)}>
-                                        {enterprise.is_enabled ? 'Disable' : 'Enable'}
-                                    </button>
-                                    <button onClick={() => handleEdit(enterprise)}>Edit</button>
-                                    <button onClick={() => handleManageEnterprise(enterprise.id_enterprise)}>Manage</button>
-                                </td>
+                <div className="table-responsive">
+                    <table className="table table-bordered">
+                        <thead className="thead-light">
+                            <tr>
+                                <th>Name</th>
+                                <th>License</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {enterprises.map(enterprise => (
+                                <tr key={enterprise.id_enterprise}>
+                                    <td>{enterprise.name}</td>
+                                    <td>{enterprise.license}</td>
+                                    <td>{enterprise.phone}</td>
+                                    <td>{enterprise.email}</td>
+                                    <td className="table-actions">
+                                        <button className="btn btn-secondary btn-sm" onClick={() => handleEnableToggle(enterprise.id_enterprise, !enterprise.is_enabled)}>
+                                            {enterprise.is_enabled ? 'Disable' : 'Enable'}
+                                        </button>
+                                        <button className="btn btn-warning btn-sm" onClick={() => handleEdit(enterprise)}>Edit</button>
+                                        <button className="btn btn-primary btn-sm" onClick={() => handleManageEnterprise(enterprise.id_enterprise)}>Manage</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             ) : (
-                <p>No enterprises found.</p>
+                <p className="text-center">No enterprises found.</p>
             )}
 
             <EnterpriseModal
