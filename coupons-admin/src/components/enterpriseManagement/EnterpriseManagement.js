@@ -27,11 +27,19 @@ const EnterpriseManagement = () => {
     }, []);
 
     const loadEnterprises = () => {
-        enterpriseService.getEnterprises().then(response => {
-            setEnterprises(response.data);
-        }).catch(error => {
-            console.error("Error fetching enterprises:", error);
-        });
+        enterpriseService.getEnterprises()
+            .then(response => {
+                if (Array.isArray(response.data)) {
+                    setEnterprises(response.data);
+                } else {
+                    console.error("Unexpected response format:", response.data);
+                    setEnterprises([]);
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching enterprises:", error);
+                setEnterprises([]);
+            });
     };
 
     const handleChange = (e) => {
@@ -114,34 +122,38 @@ const EnterpriseManagement = () => {
             <button onClick={openModal}>Create Enterprise</button>
 
             <h2>List of Enterprises</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>License</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {enterprises.map(enterprise => (
-                        <tr key={enterprise.id_enterprise}>
-                            <td>{enterprise.name}</td>
-                            <td>{enterprise.license}</td>
-                            <td>{enterprise.phone}</td>
-                            <td>{enterprise.email}</td>
-                            <td>
-                                <button onClick={() => handleEnableToggle(enterprise.id_enterprise, !enterprise.is_enabled)}>
-                                    {enterprise.is_enabled ? 'Disable' : 'Enable'}
-                                </button>
-                                <button onClick={() => handleEdit(enterprise)}>Edit</button>
-                                <button onClick={() => handleManageEnterprise(enterprise.id_enterprise)}>Manage</button>
-                            </td>
+            {Array.isArray(enterprises) && enterprises.length > 0 ? (
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>License</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {enterprises.map(enterprise => (
+                            <tr key={enterprise.id_enterprise}>
+                                <td>{enterprise.name}</td>
+                                <td>{enterprise.license}</td>
+                                <td>{enterprise.phone}</td>
+                                <td>{enterprise.email}</td>
+                                <td>
+                                    <button onClick={() => handleEnableToggle(enterprise.id_enterprise, !enterprise.is_enabled)}>
+                                        {enterprise.is_enabled ? 'Disable' : 'Enable'}
+                                    </button>
+                                    <button onClick={() => handleEdit(enterprise)}>Edit</button>
+                                    <button onClick={() => handleManageEnterprise(enterprise.id_enterprise)}>Manage</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            ) : (
+                <p>No enterprises found.</p>
+            )}
 
             <EnterpriseModal
                 isOpen={modalIsOpen}
@@ -150,7 +162,7 @@ const EnterpriseManagement = () => {
                 handleChange={handleChange}
                 handleSubmit={handleCreateOrUpdate}
                 editMode={editMode}
-                backendErrors={backendErrors} // Pasar los errores del backend al modal
+                backendErrors={backendErrors}
             />
         </div>
     );
