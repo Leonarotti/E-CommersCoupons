@@ -30,9 +30,15 @@
     flex-direction: column;
 }
 
-.modal form input {
+.modal form input{
     padding: 10px;
     margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.modal form select {
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
 }
