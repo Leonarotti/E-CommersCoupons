@@ -51,7 +51,7 @@ try {
             break;
         case 'PUT':
             $data = json_decode(file_get_contents("php://input"));
-            if (!isset($data->code)) {
+            if (!isset($data->name)) {
                 // Enable or disable coupon
                 $result = $couponBusiness->setCouponEnabled($data->id_coupon, $data->is_enabled);
                 if ($result === true) {

@@ -20,7 +20,6 @@ CREATE TABLE coupon (
     id_coupon INT PRIMARY KEY AUTO_INCREMENT,
     id_enterprise INT NOT NULL,
     id_category INT NOT NULL,
-    code VARCHAR(255) NOT NULL UNIQUE,
     name VARCHAR(100) NOT NULL,
     img VARCHAR(255) NOT NULL,
     location VARCHAR(200) NOT NULL,

@@ -3,7 +3,6 @@ class Coupon {
     public $id_coupon;
     public $id_enterprise;
     public $id_category;
-    public $code;
     public $name;
     public $img;
     public $location;
@@ -13,11 +12,10 @@ class Coupon {
     public $end_date;
     public $is_enabled;
 
-    public function __construct($id_coupon, $id_enterprise, $id_category, $code, $name, $img, $location, $regular_price, $percentage, $start_date, $end_date, $is_enabled) {
+    public function __construct($id_coupon, $id_enterprise, $id_category, $name, $img, $location, $regular_price, $percentage, $start_date, $end_date, $is_enabled) {
         $this->id_coupon = $id_coupon;
         $this->id_enterprise = $id_enterprise;
         $this->id_category = $id_category;
-        $this->code = $code;
         $this->name = $name;
         $this->img = $img;
         $this->location = $location;

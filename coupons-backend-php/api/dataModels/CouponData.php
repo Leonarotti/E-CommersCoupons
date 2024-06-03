@@ -25,20 +25,11 @@ class CouponData {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getCouponByCode($code) {
-        $query = 'SELECT * FROM ' . $this->table_name . ' WHERE code = :code';
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':code', $code);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
     public function create($coupon) {
-        $query = 'INSERT INTO ' . $this->table_name . ' SET id_enterprise=:id_enterprise, id_category=:id_category, code=:code, name=:name, img=:img, location=:location, regular_price=:regular_price, percentage=:percentage, start_date=:start_date, end_date=:end_date, is_enabled=:is_enabled';
+        $query = 'INSERT INTO ' . $this->table_name . ' SET id_enterprise=:id_enterprise, id_category=:id_category, name=:name, img=:img, location=:location, regular_price=:regular_price, percentage=:percentage, start_date=:start_date, end_date=:end_date, is_enabled=:is_enabled';
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id_enterprise', $coupon->id_enterprise);
         $stmt->bindParam(':id_category', $coupon->id_category);
-        $stmt->bindParam(':code', $coupon->code);
         $stmt->bindParam(':name', $coupon->name);
         $stmt->bindParam(':img', $coupon->img);
         $stmt->bindParam(':location', $coupon->location);
@@ -55,11 +46,10 @@ class CouponData {
     }
 
     public function update($coupon) {
-        $query = 'UPDATE ' . $this->table_name . ' SET id_enterprise = :id_enterprise, id_category = :id_category, code = :code, name = :name, img = :img, location = :location, regular_price = :regular_price, percentage = :percentage, start_date = :start_date, end_date = :end_date, is_enabled = :is_enabled WHERE id_coupon = :id_coupon';
+        $query = 'UPDATE ' . $this->table_name . ' SET id_enterprise = :id_enterprise, id_category = :id_category, name = :name, img = :img, location = :location, regular_price = :regular_price, percentage = :percentage, start_date = :start_date, end_date = :end_date, is_enabled = :is_enabled WHERE id_coupon = :id_coupon';
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id_enterprise', $coupon->id_enterprise);
         $stmt->bindParam(':id_category', $coupon->id_category);
-        $stmt->bindParam(':code', $coupon->code);
         $stmt->bindParam(':name', $coupon->name);
         $stmt->bindParam(':img', $coupon->img);
         $stmt->bindParam(':location', $coupon->location);

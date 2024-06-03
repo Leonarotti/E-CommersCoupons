@@ -13,7 +13,7 @@ class CouponBusiness {
         $coupons_arr = array();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
-            $coupon_item = new Coupon($id_coupon, $id_enterprise, $id_category, $code, $name, $img, $location, $regular_price, $percentage, $start_date, $end_date, $is_enabled);
+            $coupon_item = new Coupon($id_coupon, $id_enterprise, $id_category, $name, $img, $location, $regular_price, $percentage, $start_date, $end_date, $is_enabled);
             array_push($coupons_arr, $coupon_item);
         }
         return $coupons_arr;
@@ -26,7 +26,7 @@ class CouponBusiness {
 
         $data = $this->couponData->getCouponById($id);
         if ($data) {
-            return new Coupon($data['id_coupon'], $data['id_enterprise'], $data['id_category'], $data['code'], $data['name'], $data['img'], $data['location'], $data['regular_price'], $data['percentage'], $data['start_date'], $data['end_date'], $data['is_enabled']);
+            return new Coupon($data['id_coupon'], $data['id_enterprise'], $data['id_category'], $data['name'], $data['img'], $data['location'], $data['regular_price'], $data['percentage'], $data['start_date'], $data['end_date'], $data['is_enabled']);
         } else {
             return null;
         }
@@ -38,13 +38,7 @@ class CouponBusiness {
             return $validationResult; // Return the validation error message
         }
 
-        // Check if the code already exists
-        $existingCoupon = $this->couponData->getCouponByCode($data->code);
-        if ($existingCoupon) {
-            return 'Ya existe un cupón con el código ' . $data->code;
-        }
-
-        $coupon = new Coupon(null, $data->id_enterprise, $data->id_category, $data->code, $data->name, $data->img, $data->location, $data->regular_price, $data->percentage, $data->start_date, $data->end_date, $data->is_enabled);
+        $coupon = new Coupon(null, $data->id_enterprise, $data->id_category, $data->name, $data->img, $data->location, $data->regular_price, $data->percentage, $data->start_date, $data->end_date, $data->is_enabled);
         return $this->couponData->create($coupon) ? true : 'Error al crear cupón.';
     }
 
@@ -54,7 +48,7 @@ class CouponBusiness {
             return $validationResult; // Return the validation error message
         }
 
-        $coupon = new Coupon($data->id_coupon, $data->id_enterprise, $data->id_category, $data->code, $data->name, $data->img, $data->location, $data->regular_price, $data->percentage, $data->start_date, $data->end_date, $data->is_enabled);
+        $coupon = new Coupon($data->id_coupon, $data->id_enterprise, $data->id_category, $data->name, $data->img, $data->location, $data->regular_price, $data->percentage, $data->start_date, $data->end_date, $data->is_enabled);
         return $this->couponData->update($coupon) ? true : 'Error al actualizar cupón.';
     }
 
@@ -76,7 +70,7 @@ class CouponBusiness {
         if ($isUpdate && empty($data->id_coupon)) {
             return 'ID de cupón requerido para actualizar.';
         }
-        if (empty($data->id_enterprise) || empty($data->id_category) || empty($data->code) || empty($data->name) || empty($data->img) || empty($data->location) || empty($data->regular_price) || empty($data->percentage) || empty($data->start_date) || empty($data->end_date)) {
+        if (empty($data->id_enterprise) || empty($data->id_category) || empty($data->name) || empty($data->img) || empty($data->location) || empty($data->regular_price) || empty($data->percentage) || empty($data->start_date) || empty($data->end_date)) {
             return 'Datos incompletos para el cupón.';
         }
         if (!preg_match('/^[0-9]+(\.[0-9]{1,2})?$/', $data->regular_price)) {
