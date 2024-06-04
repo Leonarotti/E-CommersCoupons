@@ -43,6 +43,10 @@
     border-radius: 5px;
 }
 
+.modal form .image-preview {
+
+}
+
 .modal form .error {
     color: #d9534f;
     font-size: 14px;

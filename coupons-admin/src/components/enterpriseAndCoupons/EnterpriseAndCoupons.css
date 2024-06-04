@@ -1,0 +1,113 @@
+/* Estilos generales para el contenedor principal */
+.enterprise-and-coupons {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el botón de navegación */
+.enterprise-and-coupons button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.enterprise-and-coupons button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para los encabezados */
+.enterprise-and-coupons h1,
+.enterprise-and-coupons h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Estilos para el formulario de la empresa */
+.enterprise-and-coupons form {
+    margin-bottom: 40px;
+}
+
+.enterprise-and-coupons form input[type="text"],
+.enterprise-and-coupons form input[type="email"],
+.enterprise-and-coupons form input[type="date"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.enterprise-and-coupons form label {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.enterprise-and-coupons form label input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Estilos para los mensajes de error */
+.error {
+    color: red;
+    font-size: 0.9em;
+}
+
+/* Estilos para la tabla de cupones */
+.enterprise-and-coupons table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.enterprise-and-coupons table th,
+.enterprise-and-coupons table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.enterprise-and-coupons table th {
+    background-color: #f4f4f4;
+}
+
+.enterprise-and-coupons table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.enterprise-and-coupons table button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 2px;
+}
+
+.enterprise-and-coupons table button:hover {
+    background-color: #218838;
+}
+
+.enterprise-and-coupons table button.edit {
+    background-color: #ffc107;
+}
+
+.enterprise-and-coupons table button.edit:hover {
+    background-color: #e0a800;
+}
+
+.enterprise-and-coupons table button.manage {
+    background-color: #17a2b8;
+}
+
+.enterprise-and-coupons table button.manage:hover {
+    background-color: #138496;
+}
