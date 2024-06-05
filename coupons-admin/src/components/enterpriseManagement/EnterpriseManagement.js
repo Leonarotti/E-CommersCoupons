@@ -93,8 +93,8 @@ const EnterpriseManagement = () => {
         });
     };
 
-    const handleManageEnterprise = (id) => {
-        navigate(`/enterprises/${id}`);
+    const handleManageEnterprise = (enterpriseId) => {
+        navigate(`/enterprises/${enterpriseId}/coupons/`);
     };
 
     const openModal = () => {

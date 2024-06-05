@@ -9,6 +9,8 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+    max-height: 90%;
 }
 
 .overlay {
@@ -30,17 +32,19 @@
     flex-direction: column;
 }
 
-.modal form input{
+.modal form input,
+.modal form select {
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
 }
 
-.modal form select {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+.modal form .image-preview {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .modal form .error {
@@ -49,7 +53,13 @@
     margin-bottom: 10px;
 }
 
-.modal form button {
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.button-group button {
     padding: 10px 15px;
     background-color: #006adb;
     color: #fff;
@@ -59,14 +69,22 @@
     margin-top: 10px;
 }
 
-.modal form button:hover {
+.button-group button:hover {
     background-color: #0056b3;
 }
 
-.modal form button[type="button"] {
+.button-group button[type="button"] {
     background-color: #6c757d;
 }
 
-.modal form button[type="button"]:hover {
+.button-group button[type="button"]:hover {
     background-color: #5a6268;
+}
+
+@media (min-width: 600px) {
+    .button-group {
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 15px;
+    }
 }
