@@ -1,6 +1,6 @@
 <?php
 class Database {
-    private $host = 'localhost';
+    private $host = 'localhost:3307';
     private $db_name = 'coupons_db';
     private $username = 'root';
     private $password = '';
