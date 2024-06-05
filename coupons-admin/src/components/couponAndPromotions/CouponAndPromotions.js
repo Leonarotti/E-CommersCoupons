@@ -23,7 +23,9 @@ const CouponAndPromotions = () => {
 
     useEffect(() => {
         couponService.getCouponById(couponId).then(response => {
-            setCoupon(response.data);
+            const couponData = response.data;
+            couponData.is_enabled = Boolean(Number(couponData.is_enabled)); // Convertir a booleano
+            setCoupon(couponData);
         }).catch(error => {
             console.error("Error fetching coupon:", error);
         });
@@ -31,7 +33,11 @@ const CouponAndPromotions = () => {
 
     const loadPromotions = useCallback(() => {
         promotionService.getPromotionsByCouponId(couponId).then(response => {
-            setPromotions(response.data);
+            const promotionsWithBooleans = response.data.map(promotion => ({
+                ...promotion,
+                is_enabled: Boolean(Number(promotion.is_enabled)) // Convertir a booleano
+            }));
+            setPromotions(promotionsWithBooleans);
         }).catch(error => {
             console.error("Error fetching promotions:", error);
         });
@@ -42,8 +48,8 @@ const CouponAndPromotions = () => {
     }, [loadPromotions]);
 
     const handleCouponChange = (e) => {
-        const { name, value } = e.target;
-        setCoupon({ ...coupon, [name]: value });
+        const { name, value, type, checked } = e.target;
+        setCoupon({ ...coupon, [name]: type === 'checkbox' ? checked : value });
     };
 
     const handlePromotionChange = (e) => {

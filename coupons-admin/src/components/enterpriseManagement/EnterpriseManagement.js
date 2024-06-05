@@ -28,11 +28,22 @@ const EnterpriseManagement = () => {
 
     const loadEnterprises = () => {
         enterpriseService.getEnterprises().then(response => {
-            setEnterprises(response.data);
+           // console.log("Enterprises response:", response.data);
+            const enterprisesWithBooleans = response.data.map(enterprise => {
+                const isEnabled = Number(enterprise.is_enabled) === 1; // Convertir a número
+                //console.log(`ID: ${enterprise.id_enterprise}, Original: ${enterprise.is_enabled}, Converted: ${isEnabled}`);
+                return {
+                    ...enterprise,
+                    is_enabled: isEnabled
+                };
+            });
+            //console.log("Enterprises loaded:", enterprisesWithBooleans);
+            setEnterprises(enterprisesWithBooleans);
         }).catch(error => {
             console.error("Error fetching enterprises:", error);
         });
-    };
+    };    
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -77,6 +88,7 @@ const EnterpriseManagement = () => {
     };
 
     const handleEnableToggle = (id, isEnabled) => {
+        //console.log("Toggling enterprise enable status:", id, isEnabled);
         enterpriseService.setEnterpriseEnabled(id, isEnabled).then(() => {
             loadEnterprises();
         }).catch(error => {
@@ -133,7 +145,7 @@ const EnterpriseManagement = () => {
                             <td>{enterprise.email}</td>
                             <td>
                                 <button onClick={() => handleEnableToggle(enterprise.id_enterprise, !enterprise.is_enabled)}>
-                                    {enterprise.is_enabled ? 'Disable' : 'Enable'}
+                                    {(enterprise.is_enabled ? 'Disable' : 'Enable')}
                                 </button>
                                 <button onClick={() => handleEdit(enterprise)}>Edit</button>
                                 <button onClick={() => handleManageEnterprise(enterprise.id_enterprise)}>Manage</button>

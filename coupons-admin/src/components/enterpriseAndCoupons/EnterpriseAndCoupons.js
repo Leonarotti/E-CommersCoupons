@@ -29,27 +29,41 @@ const EnterpriseAndCoupons = () => {
     const [backendErrors, setBackendErrors] = useState({});
 
     useEffect(() => {
-        enterpriseService.getEnterpriseById(enterpriseId).then(response => {
-            setEnterprise(response.data);
-        }).catch(error => {
-            console.error("Error fetching enterprise:", error);
-        });
+        enterpriseService.getEnterpriseById(enterpriseId)
+            .then(response => {
+                const isEnabled = Number(response.data.is_enabled) === 1;
+                setEnterprise({ ...response.data, is_enabled: isEnabled });
+            })
+            .catch(error => {
+                console.error("Error fetching enterprise:", error);
+            });
     }, [enterpriseId]);
 
     const loadCoupons = useCallback(() => {
-        couponService.getCouponsByEnterpriseId(enterpriseId).then(response => {
-            setCoupons(response.data);
-        }).catch(error => {
-            console.error("Error fetching coupons:", error);
-        });
+        couponService.getCouponsByEnterpriseId(enterpriseId)
+            .then(response => {
+                const couponsWithBooleans = response.data.map(coupon => {
+                    const isEnabled = Number(coupon.is_enabled) === 1;
+                    return {
+                        ...coupon,
+                        is_enabled: isEnabled
+                    };
+                });
+                setCoupons(couponsWithBooleans);
+            })
+            .catch(error => {
+                console.error("Error fetching coupons:", error);
+            });
     }, [enterpriseId]);
 
     const loadCategories = useCallback(() => {
-        categoryService.getCategories().then(response => {
-            setCategories(response.data);
-        }).catch(error => {
-            console.error("Error fetching categories:", error);
-        });
+        categoryService.getCategories()
+            .then(response => {
+                setCategories(response.data);
+            })
+            .catch(error => {
+                console.error("Error fetching categories:", error);
+            });
     }, []);
 
     useEffect(() => {
@@ -58,8 +72,8 @@ const EnterpriseAndCoupons = () => {
     }, [loadCoupons, loadCategories]);
 
     const handleEnterpriseChange = (e) => {
-        const { name, value } = e.target;
-        setEnterprise({ ...enterprise, [name]: value });
+        const { name, value, type, checked } = e.target;
+        setEnterprise({ ...enterprise, [name]: type === 'checkbox' ? checked : value });
     };
 
     const handleCouponChange = (e) => {
@@ -119,7 +133,7 @@ const EnterpriseAndCoupons = () => {
 
     const handleEditCoupon = (coupon) => {
         setEditMode(true);
-        setNewCoupon({ ...coupon });
+        setNewCoupon(coupon);
         setBackendErrors({});
         setModalIsOpen(true);
     };
@@ -143,23 +157,14 @@ const EnterpriseAndCoupons = () => {
     };
 
     const handleEnableToggle = (id, isEnabled) => {
-        couponService.setCouponEnabled(id, isEnabled).then(() => {
-            loadCoupons();
-        }).catch(error => {
-            console.error("Error toggling coupon enable status:", error);
-        });
+        couponService.setCouponEnabled(id, isEnabled)
+            .then(() => {
+                loadCoupons();
+            })
+            .catch(error => {
+                console.error("Error toggling coupon enable status:", error);
+            });
     };
-
-    // const handleDeleteCoupon = (id_coupon) => {
-    //     couponService.deleteCoupon(id_coupon)
-    //         .then(response => {
-    //             console.log("Coupon deleted successfully:", response.data);
-    //             loadCoupons();
-    //         })
-    //         .catch(error => {
-    //             console.error("Error deleting coupon:", error);
-    //         });
-    // };
 
     const goBack = () => {
         navigate('/');
@@ -202,14 +207,13 @@ const EnterpriseAndCoupons = () => {
                 />
                 {backendErrors.license && <span className="error">{backendErrors.license}</span>}
 
-                <input 
-                type="date" 
-                name="date_created" 
-                placeholder="Date Created" 
-                value={enterprise.date_created} 
-                onChange={handleEnterpriseChange}
-                disabled={!editMode}
-                required
+                <input
+                    type="date"
+                    name="date_created"
+                    value={enterprise.date_created}
+                    onChange={handleEnterpriseChange}
+                    disabled={!editMode}
+                    required
                 />
                 {backendErrors.date_created && <span className="error">{backendErrors.date_created}</span>}
 
