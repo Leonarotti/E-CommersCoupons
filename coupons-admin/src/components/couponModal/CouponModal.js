@@ -123,8 +123,10 @@ const CouponModal = ({ isOpen, onRequestClose, coupon, handleCouponChange, handl
                 </label>
                 {backendErrors.is_enabled && <span className="error">{backendErrors.is_enabled}</span>}
 
-                <button type="submit">{editMode ? 'Update' : 'Create'}</button>
-                <button type="button" onClick={onRequestClose}>Cancel</button>
+                <div className="button-group">
+                    <button type="submit">{editMode ? 'Update' : 'Create'}</button>
+                    <button type="button" onClick={onRequestClose}>Cancel</button>
+                </div>
             </form>
         </Modal>
     );

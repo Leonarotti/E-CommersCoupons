@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_URL = 'http://localhost/coupons-backend-php/api/controllers/CouponController.php';
 
 const getCouponsByEnterpriseId = (enterpriseId) => {
-    return axios.get(`${API_URL}?enterprise_id=${enterpriseId}`);
+    return axios.get(`${API_URL}?id_enterprise=${enterpriseId}`);
 };
 
 const createCoupon = (coupon) => {

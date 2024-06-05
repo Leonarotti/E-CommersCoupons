@@ -7,7 +7,7 @@ import CouponModal from '../couponModal/CouponModal';
 import './EnterpriseAndCoupons.css';
 
 const EnterpriseAndCoupons = () => {
-    const { id } = useParams();
+    const { enterpriseId } = useParams();
     const navigate = useNavigate();
     const [enterprise, setEnterprise] = useState(null);
     const [coupons, setCoupons] = useState([]);
@@ -15,7 +15,7 @@ const EnterpriseAndCoupons = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [newCoupon, setNewCoupon] = useState({
-        id_enterprise: id,
+        id_enterprise: enterpriseId,
         id_category: '',
         name: '',
         img: '',
@@ -29,20 +29,20 @@ const EnterpriseAndCoupons = () => {
     const [backendErrors, setBackendErrors] = useState({});
 
     useEffect(() => {
-        enterpriseService.getEnterpriseById(id).then(response => {
+        enterpriseService.getEnterpriseById(enterpriseId).then(response => {
             setEnterprise(response.data);
         }).catch(error => {
             console.error("Error fetching enterprise:", error);
         });
-    }, [id]);
+    }, [enterpriseId]);
 
     const loadCoupons = useCallback(() => {
-        couponService.getCouponsByEnterpriseId(id).then(response => {
+        couponService.getCouponsByEnterpriseId(enterpriseId).then(response => {
             setCoupons(response.data);
         }).catch(error => {
             console.error("Error fetching coupons:", error);
         });
-    }, [id]);
+    }, [enterpriseId]);
 
     const loadCategories = useCallback(() => {
         categoryService.getCategories().then(response => {
@@ -83,7 +83,7 @@ const EnterpriseAndCoupons = () => {
     const handleOpenModal = () => {
         setEditMode(false);
         setNewCoupon({
-            id_enterprise: id,
+            id_enterprise: enterpriseId,
             id_category: '',
             name: '',
             img: '',
@@ -139,7 +139,7 @@ const EnterpriseAndCoupons = () => {
     };
 
     const handleManageCoupon = (couponId) => {
-        navigate(`/enterprises/${id}/coupons/${couponId}`);
+        navigate(`/enterprises/${enterpriseId}/coupons/${couponId}/promotions`);
     };
 
     const handleEnableToggle = (id, isEnabled) => {
