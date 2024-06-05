@@ -1,6 +1,6 @@
 <?php
 header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
 
@@ -20,9 +20,9 @@ $enterpriseBusiness = new EnterpriseBusiness($db);
 $request_method = $_SERVER['REQUEST_METHOD'];
 $id = isset($_GET['id']) ? intval($_GET['id']) : null;
 
-function sendResponse($status_code, $message) {
+function sendResponse($status_code, $data) {
     http_response_code($status_code);
-    echo json_encode(array('message' => $message));
+    echo json_encode($data);
 }
 
 try {
@@ -31,22 +31,22 @@ try {
             if ($id !== null) {
                 $enterprise = $enterpriseBusiness->getEnterpriseById($id);
                 if ($enterprise) {
-                    echo json_encode($enterprise);
+                    sendResponse(200, $enterprise);
                 } else {
-                    sendResponse(404, 'Empresa no encontrada.');
+                    sendResponse(404, array('message' => 'Empresa no encontrada.'));
                 }
             } else {
                 $enterprises = $enterpriseBusiness->getEnterprises();
-                echo json_encode($enterprises);
+                sendResponse(200, $enterprises);
             }
             break;
         case 'POST':
             $data = json_decode(file_get_contents("php://input"));
             $result = $enterpriseBusiness->createEnterprise($data);
             if ($result === true) {
-                sendResponse(201, 'Empresa creada.');
+                sendResponse(201, array('message' => 'Empresa creada.'));
             } else {
-                sendResponse(400, $result);
+                sendResponse(400, array('message' => $result));
             }
             break;
         case 'PUT':
@@ -55,17 +55,17 @@ try {
                 // Enable or disable enterprise
                 $result = $enterpriseBusiness->setEnterpriseEnabled($data->id_enterprise, $data->is_enabled);
                 if ($result === true) {
-                    sendResponse(200, 'Estado de empresa actualizado.');
+                    sendResponse(200, array('message' => 'Estado de empresa actualizado.'));
                 } else {
-                    sendResponse(400, $result);
+                    sendResponse(400, array('message' => $result));
                 }
             } else {
                 // Update enterprise
                 $result = $enterpriseBusiness->updateEnterprise($data);
                 if ($result === true) {
-                    sendResponse(200, 'Empresa actualizada.');
+                    sendResponse(200, array('message' => 'Empresa actualizada.'));
                 } else {
-                    sendResponse(400, $result);
+                    sendResponse(400, array('message' => $result));
                 }
             }
             break;
@@ -73,16 +73,16 @@ try {
             $data = json_decode(file_get_contents("php://input"));
             $result = $enterpriseBusiness->deleteEnterprise($data->id_enterprise);
             if ($result === true) {
-                sendResponse(200, 'Empresa eliminada.');
+                sendResponse(200, array('message' => 'Empresa eliminada.'));
             } else {
-                sendResponse(400, $result);
+                sendResponse(400, array('message' => $result));
             }
             break;
         default:
-            sendResponse(405, 'Método no soportado.');
+            sendResponse(405, array('message' => 'Método no soportado.'));
             break;
     }
 } catch (Exception $e) {
-    sendResponse(500, 'Error del servidor: ' . $e->getMessage());
+    sendResponse(500, array('message' => 'Error del servidor: ' . $e->getMessage()));
 }
 ?>
