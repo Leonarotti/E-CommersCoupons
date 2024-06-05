@@ -17,19 +17,17 @@ const createEnterprise = (enterprise) => {
 };
 
 const updateEnterprise = (enterprise) => {
-    return axios.put(`${API_URL}/${enterprise.id_enterprise}`, enterprise)
+    return axios.put(API_URL, enterprise)
         .then(response => response)
         .catch(error => error.response);
 };
 
-// const deleteEnterprise = (id) => {
-//     return axios.delete(API_URL, {
-//         data: { id_enterprise: id }
-//     });
-// };
-
 const setEnterpriseEnabled = (id, isEnabled) => {
-    return axios.put(API_URL, { id_enterprise: id, is_enabled: isEnabled });
+    return axios.put(API_URL, { id_enterprise: id, is_enabled: isEnabled }, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 };
 
 const enterpriseService = {
@@ -37,7 +35,6 @@ const enterpriseService = {
     getEnterpriseById,
     createEnterprise,
     updateEnterprise,
-    // deleteEnterprise,
     setEnterpriseEnabled
 };
 
