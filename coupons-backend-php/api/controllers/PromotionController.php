@@ -10,16 +10,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 include_once '../config/Database.php';
-include_once '../business/CouponBusiness.php';
+include_once '../business/PromotionBusiness.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
-$couponBusiness = new CouponBusiness($db);
+$promotionBusiness = new PromotionBusiness($db);
 
 $request_method = $_SERVER['REQUEST_METHOD'];
 $id = isset($_GET['id']) ? intval($_GET['id']) : null;
-$id_enterprise = isset($_GET['id_enterprise']) ? intval($_GET['id_enterprise']) : null;
+$id_coupon = isset($_GET['id_coupon']) ? intval($_GET['id_coupon']) : null;
 
 function sendResponse($status_code, $message) {
     http_response_code($status_code);
@@ -30,44 +30,44 @@ try {
     switch ($request_method) {
         case 'GET':
             if ($id !== null) {
-                $coupon = $couponBusiness->getCouponById($id);
-                if ($coupon) {
-                    echo json_encode($coupon);
+                $promotion = $promotionBusiness->getPromotionById($id);
+                if ($promotion) {
+                    echo json_encode($promotion);
                 } else {
-                    sendResponse(404, 'Cupón no encontrado.');
+                    sendResponse(404, 'Promoción no encontrada.');
                 }
-            } elseif ($id_enterprise !== null) {
-                $coupons = $couponBusiness->getCouponsByEnterpriseId($id_enterprise);
-                echo json_encode($coupons);
+            } elseif ($id_coupon !== null) {
+                $promotions = $promotionBusiness->getPromotionsByCouponId($id_coupon);
+                echo json_encode($promotions);
             } else {
-                $coupons = $couponBusiness->getCoupons();
-                echo json_encode($coupons);
+                $promotions = $promotionBusiness->getPromotions();
+                echo json_encode($promotions);
             }
             break;
         case 'POST':
             $data = json_decode(file_get_contents("php://input"));
-            $result = $couponBusiness->createCoupon($data);
+            $result = $promotionBusiness->createPromotion($data);
             if ($result === true) {
-                sendResponse(201, 'Cupón creado.');
+                sendResponse(201, 'Promoción creada.');
             } else {
                 sendResponse(400, $result);
             }
             break;
         case 'PUT':
             $data = json_decode(file_get_contents("php://input"));
-            if (!isset($data->name)) {
-                // Enable or disable coupon
-                $result = $couponBusiness->setCouponEnabled($data->id_coupon, $data->is_enabled);
+            if (!isset($data->percentage)) {
+                // Enable or disable promotion
+                $result = $promotionBusiness->setPromotionEnabled($data->id_promotion, $data->is_enabled);
                 if ($result === true) {
-                    sendResponse(200, 'Estado de cupón actualizado.');
+                    sendResponse(200, 'Estado de promoción actualizado.');
                 } else {
                     sendResponse(400, $result);
                 }
             } else {
-                // Update coupon
-                $result = $couponBusiness->updateCoupon($data);
+                // Update promotion
+                $result = $promotionBusiness->updatePromotion($data);
                 if ($result === true) {
-                    sendResponse(200, 'Cupón actualizado.');
+                    sendResponse(200, 'Promoción actualizada.');
                 } else {
                     sendResponse(400, $result);
                 }
@@ -75,9 +75,9 @@ try {
             break;
         case 'DELETE':
             $data = json_decode(file_get_contents("php://input"));
-            $result = $couponBusiness->deleteCoupon($data->id_coupon);
+            $result = $promotionBusiness->deletePromotion($data->id_promotion);
             if ($result === true) {
-                sendResponse(200, 'Cupón eliminado.');
+                sendResponse(200, 'Promoción eliminada.');
             } else {
                 sendResponse(400, $result);
             }

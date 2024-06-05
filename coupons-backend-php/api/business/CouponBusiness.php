@@ -19,6 +19,17 @@ class CouponBusiness {
         return $coupons_arr;
     }
 
+    public function getCouponsByEnterpriseId($id_enterprise) {
+        $stmt = $this->couponData->getCouponsByEnterpriseId($id_enterprise);
+        $coupons_arr = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
+            $coupon_item = new Coupon($id_coupon, $id_enterprise, $id_category, $name, $img, $location, $regular_price, $percentage, $start_date, $end_date, $is_enabled);
+            array_push($coupons_arr, $coupon_item);
+        }
+        return $coupons_arr;
+    }
+
     public function getCouponById($id) {
         if (!$this->isValidId($id)) {
             return ['error' => 'Invalid coupon ID'];

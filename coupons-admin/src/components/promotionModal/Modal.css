@@ -1,4 +1,4 @@
-/* .modal {
+.modal {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -68,4 +68,5 @@ button[type="button"] {
 
 button[type="button"]:hover {
     background-color: #5a6268;
-} */
+}
+

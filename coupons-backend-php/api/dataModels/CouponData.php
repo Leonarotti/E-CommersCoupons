@@ -17,6 +17,14 @@ class CouponData {
         return $stmt;
     }
 
+    public function getCouponsByEnterpriseId($id_enterprise) {
+        $query = 'SELECT * FROM ' . $this->table_name . ' WHERE id_enterprise = :id_enterprise';
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id_enterprise', $id_enterprise);
+        $stmt->execute();
+        return $stmt;
+    }
+
     public function getCouponById($id) {
         $query = 'SELECT * FROM ' . $this->table_name . ' WHERE id_coupon = :id_coupon';
         $stmt = $this->conn->prepare($query);
