@@ -28,20 +28,23 @@ const EnterpriseManagement = () => {
     }, []);
 
     const loadEnterprises = () => {
-        enterpriseService.getEnterprises()
-            .then(response => {
-                if (Array.isArray(response.data)) {
-                    setEnterprises(response.data);
-                } else {
-                    console.error("Unexpected response format:", response.data);
-                    setEnterprises([]);
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching enterprises:", error);
-                setEnterprises([]);
+        enterpriseService.getEnterprises().then(response => {
+           // console.log("Enterprises response:", response.data);
+            const enterprisesWithBooleans = response.data.map(enterprise => {
+                const isEnabled = Number(enterprise.is_enabled) === 1; // Convertir a número
+                //console.log(`ID: ${enterprise.id_enterprise}, Original: ${enterprise.is_enabled}, Converted: ${isEnabled}`);
+                return {
+                    ...enterprise,
+                    is_enabled: isEnabled
+                };
             });
-    };
+            //console.log("Enterprises loaded:", enterprisesWithBooleans);
+            setEnterprises(enterprisesWithBooleans);
+        }).catch(error => {
+            console.error("Error fetching enterprises:", error);
+            setEnterprises([]);
+        });
+    };    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -86,6 +89,7 @@ const EnterpriseManagement = () => {
     };
 
     const handleEnableToggle = (id, isEnabled) => {
+        //console.log("Toggling enterprise enable status:", id, isEnabled);
         enterpriseService.setEnterpriseEnabled(id, isEnabled).then(() => {
             loadEnterprises();
         }).catch(error => {
