@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, NavLink } from 'react-router-dom';
 import EnterpriseManagement from './components/enterpriseManagement/EnterpriseManagement';
@@ -19,10 +18,20 @@ function App() {
                 <nav className="container">
                     <ul className="nav justify-content-center">
                         <li className="nav-item">
-                            <NavLink className="nav-link text-white" to="/" activeClassName="active">Enterprises</NavLink>
+                            <NavLink
+                                className={({ isActive }) => `nav-link text-white${isActive ? ' active' : ''}`}
+                                to="/"
+                            >
+                                Enterprises
+                            </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link text-white" to="/categories" activeClassName="active">Categories</NavLink>
+                            <NavLink
+                                className={({ isActive }) => `nav-link text-white${isActive ? ' active' : ''}`}
+                                to="/categories"
+                            >
+                                Categories
+                            </NavLink>
                         </li>
                     </ul>
                 </nav>
