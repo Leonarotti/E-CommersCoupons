@@ -53,16 +53,37 @@ const CouponModal = ({ isOpen, onRequestClose, coupon, handleCouponChange, handl
         }
     };
 
-    const handleImageUpload = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setImagePreview(reader.result);
-            handleCouponChange({ target: { name: 'img', value: reader.result } });
-        };
-        reader.readAsDataURL(file);
-    };
+    // const handleImageUpload = (e) => {
+    //     const file = e.target.files[0];
+    //     const reader = new FileReader();
+    //     reader.onloadend = () => {
+    //         setImagePreview(reader.result);
+    //         handleCouponChange({ target: { name: 'img', value: reader.result } });
+    //     };
+    //     reader.readAsDataURL(file);
+    // };
 
+    const handleImageUpload = async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'PresetCoupons');
+    
+            try {
+                const response = await fetch(`https://api.cloudinary.com/v1_1/dog4dmw2v/image/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                const imageUrl = data.secure_url; // Obtener la URL de Cloudinary
+                setImagePreview(imageUrl); // Guardar la URL en el estado
+                handleCouponChange({ target: { name: 'img', value: imageUrl } }); // Actualizar el estado del cupón con la URL
+            } catch (error) {
+                console.error("Error uploading image:", error);
+            }
+        }
+    };
     return (
         <Modal
             isOpen={isOpen}

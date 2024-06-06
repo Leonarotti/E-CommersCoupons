@@ -194,6 +194,8 @@ const CouponDetails = () => {
                         <input type="file" id="imgUpload" onChange={handleImageUpload} disabled={!editMode} />
                         {imagePreview && <img src={imagePreview} alt="Preview" style={{ width: '100px', height: '100px' }} />}
                     </div>
+             
+
                 </div>
                 
                 {editMode && <button type="submit">Update</button>}

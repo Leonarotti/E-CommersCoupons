@@ -13,6 +13,7 @@ const createCoupon = (coupon) => {
 };
 
 const updateCoupon = (coupon) => {
+    console.log('api url',coupon)
     return axios.put(`${API_URL}/${coupon.id_coupon}`, coupon)
         .then(response => response)
         .catch(error => error.response);
