@@ -93,15 +93,17 @@ const CouponModal = ({ isOpen, onRequestClose, coupon, handleCouponChange, handl
             isOpen={isOpen}
             onRequestClose={onRequestClose}
             contentLabel="Coupon Modal"
-            className="modal"
+            className="modalCoupon"
             overlayClassName="overlay"
         >
             <h2>{editMode ? 'Edit Coupon' : 'Create Coupon'}</h2>
             <form onSubmit={handleFormSubmit}>
+            <label>Name:</label>
                 <input type="text" name="name" placeholder="Name" value={coupon.name} onChange={handleCouponChange} required />
                 {errors.name && <span className="error">{errors.name}</span>}
                 {backendErrors.name && <span className="error">{backendErrors.name}</span>}
 
+                <label>Category:</label>
                 <select name="id_category" value={coupon.id_category} onChange={handleCouponChange} required>
                     <option value="">Select Category</option>
                     {categories.map(category => (
@@ -113,34 +115,37 @@ const CouponModal = ({ isOpen, onRequestClose, coupon, handleCouponChange, handl
                 {errors.id_category && <span className="error">{errors.id_category}</span>}
                 {backendErrors.id_category && <span className="error">{backendErrors.id_category}</span>}
 
+                <label>Location:</label>
                 <input type="text" name="location" placeholder="Location" value={coupon.location} onChange={handleCouponChange} required />
                 {errors.location && <span className="error">{errors.location}</span>}
                 {backendErrors.location && <span className="error">{backendErrors.location}</span>}
 
+                <label>Regular Price:</label>
                 <input type="text" name="regular_price" placeholder="Regular Price" value={coupon.regular_price} onChange={handleCouponChange} required />
                 {errors.regular_price && <span className="error">{errors.regular_price}</span>}
                 {backendErrors.regular_price && <span className="error">{backendErrors.regular_price}</span>}
-
+               
+                <label>Discount Percentage:</label>
                 <input type="text" name="percentage" placeholder="Discount Percentage" value={coupon.percentage} onChange={handleCouponChange} required />
                 {errors.percentage && <span className="error">{errors.percentage}</span>}
                 {backendErrors.percentage && <span className="error">{backendErrors.percentage}</span>}
 
-                <strong>Start Date:</strong>
-
+                <label>Start Date:</label>
                 <input type="date" name="start_date" placeholder="Start Date" value={coupon.start_date} onChange={handleCouponChange} required />
                 {errors.start_date && <span className="error">{errors.start_date}</span>}
                 {backendErrors.start_date && <span className="error">{backendErrors.start_date}</span>}
                
-                <strong>End Date:</strong>
+                <label>End Date:</label>
                 <input type="date" name="end_date" placeholder="End Date" value={coupon.end_date} onChange={handleCouponChange}  min={coupon.start_date} required/>
                 {errors.end_date && <span className="error">{errors.end_date}</span>}
                 {backendErrors.end_date && <span className="error">{backendErrors.end_date}</span>}
 
+                <label>Image Upload:</label>
                 <input type="file" name="img" accept="image/*" onChange={handleImageUpload} />
                 {imagePreview && <img src={imagePreview} alt="Preview" className="image-preview" />}
                 {backendErrors.img && <span className="error">{backendErrors.img}</span>}
 
-                <label>
+                <strong>
                     <input
                         type="checkbox"
                         name="is_enabled"
@@ -148,7 +153,7 @@ const CouponModal = ({ isOpen, onRequestClose, coupon, handleCouponChange, handl
                         onChange={handleCouponChange}
                     />
                     Enabled
-                </label>
+                </strong>
                 {backendErrors.is_enabled && <span className="error">{backendErrors.is_enabled}</span>}
 
                 <div className="button-group">

@@ -92,19 +92,25 @@
 } */
 
 
-.modal {
+
+
+.modalCoupon {
     position: fixed;
     top: 50%;
     left: 50%;
+    background: rgb(212, 220, 248);
     transform: translate(-50%, -50%);
     width: 90%;
     max-width: 600px;
-    background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     overflow-y: auto;
     max-height: 90%;
+    
+    /* display: flex;
+    flex-direction: column; 
+     */
 }
 
 .overlay {
@@ -116,32 +122,38 @@
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-.modal h2 {
+.modalCoupon h2 {
     font-size: 22px;
     margin-bottom: 20px;
 }
 
-.modal form {
+.modalCoupon form {
     display: flex;
     flex-direction: column;
 }
 
-.modal form input,
-.modal form select {
+.modal form .error {
+    color: #d9534f;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.modalCoupon form input,
+.modalCoupon form select {
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
 }
 
-.modal form .image-preview {
-    max-width: 100%;
+.modalCoupon form .image-preview {
+    max-width: 40%;
     height: auto;
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-.modal form .error {
+.modalCoupon form .error {
     color: #d9534f;
     font-size: 14px;
     margin-bottom: 10px;
