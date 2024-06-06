@@ -41,6 +41,10 @@ const CouponModal = ({ isOpen, onRequestClose, coupon, handleCouponChange, handl
             errors.end_date = 'End date is required';
         }
 
+        // if (coupon.start_date && coupon.end_date && new Date(coupon.start_date) > new Date(coupon.end_date)) {
+        //     errors.end_date = 'End date must be after the start date';
+        // }
+
         setErrors(errors);
 
         return Object.keys(errors).length === 0;
@@ -121,11 +125,14 @@ const CouponModal = ({ isOpen, onRequestClose, coupon, handleCouponChange, handl
                 {errors.percentage && <span className="error">{errors.percentage}</span>}
                 {backendErrors.percentage && <span className="error">{backendErrors.percentage}</span>}
 
+                <strong>Start Date:</strong>
+
                 <input type="date" name="start_date" placeholder="Start Date" value={coupon.start_date} onChange={handleCouponChange} required />
                 {errors.start_date && <span className="error">{errors.start_date}</span>}
                 {backendErrors.start_date && <span className="error">{backendErrors.start_date}</span>}
-
-                <input type="date" name="end_date" placeholder="End Date" value={coupon.end_date} onChange={handleCouponChange} required />
+               
+                <strong>End Date:</strong>
+                <input type="date" name="end_date" placeholder="End Date" value={coupon.end_date} onChange={handleCouponChange}  min={coupon.start_date} required/>
                 {errors.end_date && <span className="error">{errors.end_date}</span>}
                 {backendErrors.end_date && <span className="error">{backendErrors.end_date}</span>}
 
