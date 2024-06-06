@@ -142,6 +142,7 @@ const CouponAndPromotions = () => {
             <button onClick={goBack}>Back to Coupons</button>
             <h1>{editMode ? 'Edit Coupon' : 'Coupon Details'}</h1>
             <form onSubmit={handleUpdateCoupon}>
+                <label>Name:</label>
                 <input
                     type="text"
                     name="name"
@@ -152,6 +153,7 @@ const CouponAndPromotions = () => {
                 />
                 {backendErrors.name && <span className="error">{backendErrors.name}</span>}
 
+                <label>Location:</label>
                 <input
                     type="text"
                     name="location"
@@ -162,6 +164,7 @@ const CouponAndPromotions = () => {
                 />
                 {backendErrors.location && <span className="error">{backendErrors.location}</span>}
 
+                <label>Regular price:</label>
                 <input
                     type="text"
                     name="regular_price"
@@ -172,6 +175,7 @@ const CouponAndPromotions = () => {
                 />
                 {backendErrors.regular_price && <span className="error">{backendErrors.regular_price}</span>}
 
+                <label>Percentage:</label>
                 <input
                     type="text"
                     name="percentage"
@@ -182,6 +186,7 @@ const CouponAndPromotions = () => {
                 />
                 {backendErrors.percentage && <span className="error">{backendErrors.percentage}</span>}
 
+                <label>Start date:</label>
                 <input 
                     type="date" 
                     name="start_date" 
@@ -192,6 +197,7 @@ const CouponAndPromotions = () => {
                 />
                 {backendErrors.start_date && <span className="error">{backendErrors.start_date}</span>}
 
+                <label>End date:</label>
                 <input 
                     type="date" 
                     name="end_date" 

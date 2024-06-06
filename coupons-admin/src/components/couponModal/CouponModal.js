@@ -139,12 +139,7 @@ const CouponModal = ({ isOpen, onRequestClose, coupon, handleCouponChange, handl
                 <input type="date" name="end_date" placeholder="End Date" value={coupon.end_date} onChange={handleCouponChange}  min={coupon.start_date} required/>
                 {errors.end_date && <span className="error">{errors.end_date}</span>}
                 {backendErrors.end_date && <span className="error">{backendErrors.end_date}</span>}
-
-                <label>Image Upload:</label>
-                <input type="file" name="img" accept="image/*" onChange={handleImageUpload} />
-                {imagePreview && <img src={imagePreview} alt="Preview" className="image-preview" />}
-                {backendErrors.img && <span className="error">{backendErrors.img}</span>}
-
+                
                 <strong>
                     <input
                         type="checkbox"
@@ -155,6 +150,11 @@ const CouponModal = ({ isOpen, onRequestClose, coupon, handleCouponChange, handl
                     Enabled
                 </strong>
                 {backendErrors.is_enabled && <span className="error">{backendErrors.is_enabled}</span>}
+
+                <label>Image Upload:</label>
+                <input type="file" name="img" accept="image/*" onChange={handleImageUpload} />
+                {imagePreview && <img src={imagePreview} alt="Preview" className="image-preview" />}
+                {backendErrors.img && <span className="error">{backendErrors.img}</span>}
 
                 <div className="button-group">
                     <button type="submit">{editMode ? 'Update' : 'Create'}</button>

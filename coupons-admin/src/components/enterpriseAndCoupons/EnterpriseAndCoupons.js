@@ -177,6 +177,7 @@ const EnterpriseAndCoupons = () => {
             <button onClick={goBack}>Back to Enterprises</button>
             <h1>{editMode ? 'Edit Enterprise' : 'Enterprise Details'}</h1>
             <form onSubmit={handleUpdateEnterprise}>
+                <label>Name:</label>
                 <input
                     type="text"
                     name="name"
@@ -187,6 +188,7 @@ const EnterpriseAndCoupons = () => {
                 />
                 {backendErrors.name && <span className="error">{backendErrors.name}</span>}
 
+                <label>Address:</label>
                 <input
                     type="text"
                     name="address"
@@ -197,6 +199,7 @@ const EnterpriseAndCoupons = () => {
                 />
                 {backendErrors.address && <span className="error">{backendErrors.address}</span>}
 
+                <label>License:</label>
                 <input
                     type="text"
                     name="license"
@@ -207,6 +210,7 @@ const EnterpriseAndCoupons = () => {
                 />
                 {backendErrors.license && <span className="error">{backendErrors.license}</span>}
 
+                <label>Date created:</label>
                 <input
                     type="date"
                     name="date_created"
@@ -217,6 +221,7 @@ const EnterpriseAndCoupons = () => {
                 />
                 {backendErrors.date_created && <span className="error">{backendErrors.date_created}</span>}
 
+                <label>Phone:</label>
                 <input
                     type="text"
                     name="phone"
@@ -227,6 +232,7 @@ const EnterpriseAndCoupons = () => {
                 />
                 {backendErrors.phone && <span className="error">{backendErrors.phone}</span>}
 
+                <label>Email:</label>
                 <input
                     type="email"
                     name="email"
@@ -278,12 +284,13 @@ const EnterpriseAndCoupons = () => {
                             <td>{coupon.percentage}%</td>
                             <td>{coupon.start_date}</td>
                             <td>{coupon.end_date}</td>
+                           
                             <td>
-                                <button onClick={() => handleEnableToggle(coupon.id_coupon, !coupon.is_enabled)}>
+                                <button className="btn btn-secondary btn-sm" onClick={() => handleEnableToggle(coupon.id_coupon, !coupon.is_enabled)}>
                                     {coupon.is_enabled ? 'Disable' : 'Enable'}
                                 </button>
-                                <button onClick={() => handleEditCoupon(coupon)} className='edit'>Edit</button>
-                                <button onClick={() => handleManageCoupon(coupon.id_coupon)} className='manage'>Manage Coupon</button>
+                                <button className="btn btn-warning btn-sm edit"  onClick={() => handleEditCoupon(coupon)} >Edit</button>
+                                <button className="btn btn-primary btn-sm manage" onClick={() => handleManageCoupon(coupon.id_coupon)}>Manage Coupon</button>
                             </td>
                         </tr>
                     ))}

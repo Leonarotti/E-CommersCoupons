@@ -30,7 +30,7 @@ const CategoryModal = ({ isOpen, onRequestClose, category, handleChange, handleS
                     handleSubmit(e);
                 }
             }}>
-                <label>Name</label>
+                <label>Name:</label>
                 <input type="text" 
                 name="name" 
                 placeholder="Name" 
