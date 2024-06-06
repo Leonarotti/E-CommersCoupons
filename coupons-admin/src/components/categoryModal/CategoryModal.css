@@ -1,4 +1,25 @@
-.modal {
+ /* .modalCategory {
+    display: flex;
+    flex-direction: column;
+    background: rgb(214, 236, 252);
+    padding: 20px;
+    width: 50%;
+}
+
+
+.modalCategory form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modalCategory button {
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+} */
+
+.modalCategory {
     position: absolute;
     top: 50%;
     left: 50%;

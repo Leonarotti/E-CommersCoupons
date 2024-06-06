@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import './Modal.css';
+import './CouponModal.css';
 
 const CouponModal = ({ isOpen, onRequestClose, coupon, handleCouponChange, handleSubmit, editMode, backendErrors, categories }) => {
     const [errors, setErrors] = useState({});

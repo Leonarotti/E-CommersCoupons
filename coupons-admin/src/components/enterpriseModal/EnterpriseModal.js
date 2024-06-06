@@ -68,14 +68,17 @@ const EnterpriseModal = ({ isOpen, onRequestClose, enterprise, handleChange, han
                 }
             }}>
                 {/* Input para el nombre */}
+                <label>Name:</label>
                 <input type="text" name="name" placeholder="Name" value={enterprise.name} onChange={handleChange} required />
                 {errors.name && <span className="error">{errors.name}</span>}
                 {backendErrors.name && <span className="error">{backendErrors.name}</span>}
                 {/* Input para la dirección */}
+                <label>Address:</label>
                 <input type="text" name="address" placeholder="Address" value={enterprise.address} onChange={handleChange} required />
                 {errors.address && <span className="error">{errors.address}</span>}
                 {backendErrors.address && <span className="error">{backendErrors.address}</span>}
                 {/* Input para la licencia */}
+                <label>License:</label>
                 <input type="text" name="license" placeholder="License" value={enterprise.license} onChange={handleChangeWithFormat} required />
                 {errors.license && <span className="error">{errors.license}</span>}
                 {backendErrors.license && <span className="error">{backendErrors.license}</span>}
@@ -84,18 +87,22 @@ const EnterpriseModal = ({ isOpen, onRequestClose, enterprise, handleChange, han
                     <span className="error" key={index}>{backendErrors[key]}</span>
                 ))}
                 {/* Input para la fecha de creación */}
+                <label>Date:</label>
                 <input type="date" name="date_created" placeholder="Date Created" value={enterprise.date_created} onChange={handleChange} required />
                 {errors.date_created && <span className="error">{errors.date_created}</span>}
                 {backendErrors.date_created && <span className="error">{backendErrors.date_created}</span>}
                 {/* Input para el teléfono */}
+                <label>Phone:</label>
                 <input type="text" name="phone" placeholder="Phone" value={enterprise.phone} onChange={handleChangeWithFormat} required />
                 {errors.phone && <span className="error">{errors.phone}</span>}
                 {backendErrors.phone && <span className="error">{backendErrors.phone}</span>}
                 {/* Input para el email */}
+                <label>Email:</label>
                 <input type="email" name="email" placeholder="Email" value={enterprise.email} onChange={handleChange} required />
                 {errors.email && <span className="error">{errors.email}</span>}
                 {backendErrors.email && <span className="error">{backendErrors.email}</span>}
                 {/* Input para la contraseña */}
+                <label>Password:</label>
                 {!editMode && <input type="password" name="password" placeholder="Password" value={enterprise.password} onChange={handleChange} required />}
                 {errors.password && <span className="error">{errors.password}</span>}
                 {backendErrors.password && <span className="error">{backendErrors.password}</span>}

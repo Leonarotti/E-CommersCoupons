@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import './Modal.css';
+import './PromotionModal.css';
 
 const PromotionModal = ({ isOpen, onRequestClose, promotion, handlePromotionChange, handleSubmit, editMode, backendErrors }) => {
     const [errors, setErrors] = useState({});
