@@ -8,6 +8,10 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.coupon-and-promotions .back-btn{
+    margin-bottom: 2em;
+}
+
 .coupon-and-promotions h1,
 .coupon-and-promotions h2 {
     color: #333;
@@ -46,6 +50,16 @@
 
 .coupon-and-promotions input[type="checkbox"] {
     margin-right: 10px;
+}
+
+.coupon-and-promotions .image-preview {
+    display: block;
+    margin: 10px auto;
+    max-width: 300px;
+    max-height: 300px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
 .coupon-and-promotions table {
