@@ -123,7 +123,7 @@ const EnterpriseManagement = () => {
 
     return (
         <div className="enterprise-management bg-white p-4 rounded shadow-sm">
-            <h1 className="text-center mb-5">Enterprise Management</h1>
+            <h1 className="text-center mb-5">Enterprises Management</h1>
             <div className="d-flex mb-3">
                 <button className= "btn btn-primary" onClick={openModal}>Create Enterprise</button>
             </div>
