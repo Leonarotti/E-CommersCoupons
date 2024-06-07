@@ -20,12 +20,14 @@ const CouponAndPromotions = () => {
         is_enabled: true
     });
     const [backendErrors, setBackendErrors] = useState({});
+    const [imagePreview, setImagePreview] = useState('');
 
     useEffect(() => {
         couponService.getCouponById(couponId).then(response => {
             const couponData = response.data;
             couponData.is_enabled = Boolean(Number(couponData.is_enabled)); // Convertir a booleano
             setCoupon(couponData);
+            setImagePreview(couponData.img || '');
         }).catch(error => {
             console.error("Error fetching coupon:", error);
         });
@@ -50,6 +52,28 @@ const CouponAndPromotions = () => {
     const handleCouponChange = (e) => {
         const { name, value, type, checked } = e.target;
         setCoupon({ ...coupon, [name]: type === 'checkbox' ? checked : value });
+    };
+
+    const handleImageUpload = async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'PresetCoupons');
+
+            try {
+                const response = await fetch(`https://api.cloudinary.com/v1_1/dog4dmw2v/image/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                const imageUrl = data.secure_url; // Obtener la URL de Cloudinary
+                setImagePreview(imageUrl); // Guardar la URL en el estado
+                setCoupon({ ...coupon, img: imageUrl }); // Actualizar el estado del cupón con la URL
+            } catch (error) {
+                console.error("Error uploading image:", error);
+            }
+        }
     };
 
     const handlePromotionChange = (e) => {
@@ -139,7 +163,7 @@ const CouponAndPromotions = () => {
 
     return (
         <div className="coupon-and-promotions">
-            <button onClick={goBack}>Back to Coupons</button>
+            <button className='back-btn' onClick={goBack}>Back to Coupons</button>
             <h1>{editMode ? 'Edit Coupon' : 'Coupon Details'}</h1>
             <form onSubmit={handleUpdateCoupon}>
                 <label>Name:</label>
@@ -218,6 +242,11 @@ const CouponAndPromotions = () => {
                     />
                     Enabled
                 </label>
+
+                <label>Image Upload:</label>
+                <input type="file" name="img" accept="image/*" onChange={handleImageUpload} disabled={!editMode} />
+                {imagePreview && <img src={imagePreview} alt="Preview" className="image-preview" />}
+                {backendErrors.img && <span className="error">{backendErrors.img}</span>}
 
                 {editMode && <button type="submit">Update</button>}
                 {!editMode && <button type="button" onClick={() => setEditMode(true)}>Edit</button>}
