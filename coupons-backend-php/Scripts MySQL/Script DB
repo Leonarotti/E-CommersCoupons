@@ -13,6 +13,7 @@ CREATE TABLE enterprise (
 CREATE TABLE category (
     id_category INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE
+    is_enabled BOOLEAN NOT NULL
 );
 
 

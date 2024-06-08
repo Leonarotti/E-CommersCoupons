@@ -1,16 +1,26 @@
 <?php
 class Enterprise {
-    public $id_enterprise;
-    public $name;
-    public $address;
-    public $license;
-    public $date_created;
-    public $phone;
-    public $email;
-    public $password;
-    public $is_enabled;
+    public int $id_enterprise;
+    public string $name;
+    public string $address;
+    public string $license;
+    public string $date_created; // 'Y-m-d' formato de fecha
+    public string $phone;
+    public string $email;
+    public string $password;
+    public bool $is_enabled;
 
-    public function __construct($id_enterprise, $name, $address, $license, $date_created, $phone, $email, $password, $is_enabled) {
+    public function __construct(
+        int $id_enterprise, 
+        string $name, 
+        string $address, 
+        string $license, 
+        string $date_created, 
+        string $phone, 
+        string $email, 
+        string $password, 
+        bool $is_enabled
+    ) {
         $this->id_enterprise = $id_enterprise;
         $this->name = $name;
         $this->address = $address;

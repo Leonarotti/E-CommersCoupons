@@ -13,11 +13,12 @@ class CategoryBusiness {
         $categories_arr = array();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
-            $category_item = new Category($id_category, $name);
+            $category_item = new Category($id_category, $name, $is_enabled);
             array_push($categories_arr, $category_item);
         }
         return $categories_arr;
     }
+
     public function getCategoryById($id) {
         if ($this->isValidId($id)) {
             return $this->categoryData->getCategoryById($id);
@@ -55,11 +56,30 @@ class CategoryBusiness {
         }
     }
 
+    public function setCategoryEnabled($id, $is_enabled) {
+        if (!$this->isValidId($id)) {
+            return ['error' => 'ID de categoría requerido para cambiar estado.'];
+        }
+        return $this->categoryData->setEnabled($id, $is_enabled) ? true : ['error' => 'Error al cambiar estado de categoría.'];
+    }
+
+    public function getEnabledCategories() {
+        $stmt = $this->categoryData->getEnabledCategories();
+        $categories_arr = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
+            $category_item = new Category($id_category, $name, $is_enabled);
+            array_push($categories_arr, $category_item);
+        }
+        return $categories_arr;
+    }
+
     private function isValidCategory($category) {
-        return !empty($category->name) && is_string($category->name);
+        return !empty($category->name) && is_string($category->name) && isset($category->is_enabled) && is_bool($category->is_enabled);
     }
 
     private function isValidId($id) {
         return !empty($id) && is_numeric($id);
     }
 }
+?>

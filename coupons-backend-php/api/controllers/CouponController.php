@@ -40,7 +40,7 @@ try {
                 $coupons = $couponBusiness->getCouponsByEnterpriseId($id_enterprise);
                 echo json_encode($coupons);
             } else {
-                $coupons = $couponBusiness->getCoupons();
+                $coupons = $couponBusiness->getCouponsWithDetails();
                 echo json_encode($coupons);
             }
             break;

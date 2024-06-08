@@ -49,7 +49,7 @@ class CouponBusiness {
             return $validationResult; // Return the validation error message
         }
 
-        $coupon = new Coupon(null, $data->id_enterprise, $data->id_category, $data->name, $data->img, $data->location, $data->regular_price, $data->percentage, $data->start_date, $data->end_date, $data->is_enabled);
+        $coupon = new Coupon(0, $data->id_enterprise, $data->id_category, $data->name, $data->img, $data->location, $data->regular_price, $data->percentage, $data->start_date, $data->end_date, $data->is_enabled);
         return $this->couponData->create($coupon) ? true : 'Error al crear cupón.';
     }
 
@@ -75,6 +75,31 @@ class CouponBusiness {
             return 'ID de cupón requerido para cambiar estado.';
         }
         return $this->couponData->setEnabled($id, $is_enabled) ? true : 'Error al cambiar estado de cupón.';
+    }
+
+    public function getCouponsWithDetails() {
+        $stmt = $this->couponData->getCouponsWithDetails();
+        $coupons_arr = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $coupon_item = new CouponWithDetails(
+                $row['id_coupon'],
+                $row['id_enterprise'],
+                $row['id_category'],
+                $row['name'],
+                $row['img'],
+                $row['location'],
+                $row['regular_price'],
+                $row['percentage'],
+                $row['start_date'],
+                $row['end_date'],
+                $row['is_enabled'],
+                $row['category'],
+                $row['enterprise']
+            );
+            
+            array_push($coupons_arr, $coupon_item);
+        }
+        return $coupons_arr;
     }
 
     private function validateCouponData($data, $isUpdate = false) {

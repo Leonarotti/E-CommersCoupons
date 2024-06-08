@@ -1,6 +1,7 @@
 <?php
 include_once '../config/Database.php';
 include_once '../domain/Coupon.php';
+include_once '../domain/CouponWithDetails.php';
 
 class CouponData {
     private $conn;
@@ -95,6 +96,13 @@ class CouponData {
             return true;
         }
         return false;
+    }
+
+    public function getCouponsWithDetails() {
+        $query = 'CALL spGetCouponsWithDetails()';
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
     }
 }
 ?>

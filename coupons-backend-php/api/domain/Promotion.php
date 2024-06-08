@@ -1,13 +1,20 @@
 <?php
 class Promotion {
-    public $id_promotion;
-    public $id_coupon;
-    public $percentage;
-    public $start_date;
-    public $end_date;
-    public $is_enabled;
+    public int $id_promotion;
+    public int $id_coupon;
+    public int $percentage;
+    public string $start_date; // 'Y-m-d' formato de fecha
+    public string $end_date; // 'Y-m-d' formato de fecha
+    public bool $is_enabled;
 
-    public function __construct($id_promotion, $id_coupon, $percentage, $start_date, $end_date, $is_enabled) {
+    public function __construct(
+        int $id_promotion, 
+        int $id_coupon, 
+        int $percentage, 
+        string $start_date, 
+        string $end_date, 
+        bool $is_enabled
+    ) {
         $this->id_promotion = $id_promotion;
         $this->id_coupon = $id_coupon;
         $this->percentage = $percentage;

@@ -1,7 +1,7 @@
 <?php
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
-header('Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Methods: POST, GET, PUT, DELETE, PATCH, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -19,6 +19,7 @@ $categoryBusiness = new CategoryBusiness($db);
 
 $request_method = $_SERVER['REQUEST_METHOD'];
 $id = isset($_GET['id']) ? intval($_GET['id']) : null;
+$enabled = isset($_GET['enabled']) ? intval($_GET['enabled']) : null;
 
 function sendResponse($status_code, $message) {
     http_response_code($status_code);
@@ -28,7 +29,10 @@ function sendResponse($status_code, $message) {
 try {
     switch ($request_method) {
         case 'GET':
-            if ($id !== null) {
+            if ($enabled !== null && $enabled === 1) {
+                $categories = $categoryBusiness->getEnabledCategories();
+                echo json_encode($categories);
+            } elseif ($id !== null) {
                 $category = $categoryBusiness->getCategoryById($id);
                 if ($category) {
                     echo json_encode($category);
@@ -63,6 +67,15 @@ try {
             $result = $categoryBusiness->delete($data->id_category);
             if ($result === true) {
                 sendResponse(200, 'Categoría eliminada.');
+            } else {
+                sendResponse(400, $result);
+            }
+            break;
+        case 'PATCH':
+            $data = json_decode(file_get_contents("php://input"));
+            $result = $categoryBusiness->setCategoryEnabled($data->id_category, $data->is_enabled);
+            if ($result === true) {
+                sendResponse(200, 'Estado de categoría actualizado.');
             } else {
                 sendResponse(400, $result);
             }

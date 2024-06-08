@@ -1,18 +1,30 @@
 <?php
 class Coupon {
-    public $id_coupon;
-    public $id_enterprise;
-    public $id_category;
-    public $name;
-    public $img;
-    public $location;
-    public $regular_price;
-    public $percentage;
-    public $start_date;
-    public $end_date;
-    public $is_enabled;
+    public int $id_coupon;
+    public int $id_enterprise;
+    public int $id_category;
+    public string $name;
+    public string $img;
+    public string $location;
+    public float $regular_price;
+    public int $percentage;
+    public string $start_date; // 'Y-m-d' formato de fecha
+    public string $end_date; // 'Y-m-d' formato de fecha
+    public bool $is_enabled;
 
-    public function __construct($id_coupon, $id_enterprise, $id_category, $name, $img, $location, $regular_price, $percentage, $start_date, $end_date, $is_enabled) {
+    public function __construct(
+        int $id_coupon, 
+        int $id_enterprise, 
+        int $id_category, 
+        string $name, 
+        string $img, 
+        string $location, 
+        float $regular_price, 
+        int $percentage, 
+        string $start_date, 
+        string $end_date, 
+        bool $is_enabled
+    ) {
         $this->id_coupon = $id_coupon;
         $this->id_enterprise = $id_enterprise;
         $this->id_category = $id_category;

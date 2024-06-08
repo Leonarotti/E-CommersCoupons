@@ -23,7 +23,7 @@ class CategoryData {
         $stmt->bindParam(':id_category', $id);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
-    }    
+    }
 
     public function getCategoryByName($name) {
         $query = 'SELECT * FROM ' . $this->table_name . ' WHERE name = :name';
@@ -31,13 +31,13 @@ class CategoryData {
         $stmt->bindParam(':name', $name);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
-    }    
-
+    }
 
     public function create($category) {
-        $query = 'INSERT INTO ' . $this->table_name . ' SET name=:name';
+        $query = 'INSERT INTO ' . $this->table_name . ' SET name = :name, is_enabled = :is_enabled';
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':name', $category->name);
+        $stmt->bindParam(':is_enabled', $category->is_enabled);
 
         if ($stmt->execute()) {
             return true;
@@ -46,9 +46,10 @@ class CategoryData {
     }
 
     public function update($category) {
-        $query = 'UPDATE ' . $this->table_name . ' SET name = :name WHERE id_category = :id_category';
+        $query = 'UPDATE ' . $this->table_name . ' SET name = :name, is_enabled = :is_enabled WHERE id_category = :id_category';
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':name', $category->name);
+        $stmt->bindParam(':is_enabled', $category->is_enabled);
         $stmt->bindParam(':id_category', $category->id_category);
 
         if ($stmt->execute()) {
@@ -67,4 +68,24 @@ class CategoryData {
         }
         return false;
     }
+
+    public function setEnabled($id, $is_enabled) {
+        $query = 'UPDATE ' . $this->table_name . ' SET is_enabled = :is_enabled WHERE id_category = :id_category';
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':is_enabled', $is_enabled, PDO::PARAM_BOOL);
+        $stmt->bindParam(':id_category', $id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getEnabledCategories() {
+        $query = 'SELECT * FROM ' . $this->table_name . ' WHERE is_enabled = 1';
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
 }
+?>
