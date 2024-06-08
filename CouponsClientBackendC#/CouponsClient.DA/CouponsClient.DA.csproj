@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Actions\" />
+    <Folder Include="Context\" />
+    <Folder Include="DataModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CouponsClient.BC\CouponsClient.BC.csproj" />
+    <ProjectReference Include="..\CouponsClient.BW\CouponsClient.BW.csproj" />
+  </ItemGroup>
+
+</Project>

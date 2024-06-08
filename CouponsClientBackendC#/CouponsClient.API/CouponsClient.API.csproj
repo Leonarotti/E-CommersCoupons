@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DTOs\" />
+    <Folder Include="Mappers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CouponsClient.BC\CouponsClient.BC.csproj" />
+    <ProjectReference Include="..\CouponsClient.BW\CouponsClient.BW.csproj" />
+    <ProjectReference Include="..\CouponsClient.DA\CouponsClient.DA.csproj" />
+    <ProjectReference Include="..\CouponsClient.SG\CouponsClient.SG.csproj" />
+  </ItemGroup>
+
+</Project>
