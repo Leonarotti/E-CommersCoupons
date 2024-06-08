@@ -8,8 +8,9 @@ namespace CouponsClient.BC.Models
 {
     public class Category
     {
-        public int IdCategory { get; set; }
-        public string Name { get; set; }
+        public int id_category { get; set; }
+        public string name { get; set; }
+        public bool is_enabled { get; set; }
     }
 
 }

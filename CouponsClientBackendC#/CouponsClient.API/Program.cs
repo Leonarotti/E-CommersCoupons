@@ -20,27 +20,22 @@ builder.Services.AddHttpClient("CouponsAPI", client =>
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
-// Register services that use HttpClient
+// Services that use HttpClient
 builder.Services.AddTransient<IManageCouponSG, ManageCouponSG>(sp =>
 {
     var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
     return new ManageCouponSG(httpClientFactory.CreateClient("CouponsAPI"));
 });
 
-//builder.Services.AddTransient<IManageCategorySG, ManageCategorySG>(sp =>
-//{
-//    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-//    return new ManageCategorySG(httpClientFactory.CreateClient("CouponsAPI"));
-//});
+builder.Services.AddTransient<IManageCategorySG, ManageCategorySG>(sp =>
+{
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    return new ManageCategorySG(httpClientFactory.CreateClient("CouponsAPI"));
+});
 
 //Dependency injection
 builder.Services.AddTransient<IManageCouponBW, ManageCouponBW>();
-//builder.Services.AddTransient<IManageCategoryBW, IManageCategoryBW>();
-
-
-//builder.Services.AddTransient<IManageUserBW, ManageUserBW>();
-//builder.Services.AddTransient<IManageConcertBW, ManageConcertBW>();
-//builder.Services.AddTransient<IManageZoneBW, ManageZoneBW>();
+builder.Services.AddTransient<IManageCategoryBW, ManageCategoryBW>();
 
 //builder.Services.AddTransient<IManageUserDA, ManageUserDA>();
 //builder.Services.AddTransient<IManageConcertDA, ManageConcertDA>();
