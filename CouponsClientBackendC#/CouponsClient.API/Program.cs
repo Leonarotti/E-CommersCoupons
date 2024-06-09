@@ -1,7 +1,9 @@
 using CouponsClient.BC.Constant;
 using CouponsClient.BW.Interfaces.BW;
+using CouponsClient.BW.Interfaces.DA;
 using CouponsClient.BW.Interfaces.SG;
 using CouponsClient.BW.UseCases;
+using CouponsClient.DA.Actions;
 using CouponsClient.DA.Context;
 using CouponsClient.SG;
 using Microsoft.EntityFrameworkCore;
@@ -39,9 +41,9 @@ builder.Services.AddTransient<IManageCategorySG, ManageCategorySG>(sp =>
 builder.Services.AddTransient<IManageCouponBW, ManageCouponBW>();
 builder.Services.AddTransient<IManageCategoryBW, ManageCategoryBW>();
 
-//builder.Services.AddTransient<IManageUserDA, ManageUserDA>();
-//builder.Services.AddTransient<IManageConcertDA, ManageConcertDA>();
-//builder.Services.AddTransient<IManageZoneDA, ManageZoneDA>();
+builder.Services.AddTransient<IManageClientBW, ManageClientBW>();
+
+builder.Services.AddTransient<IManageClientDA, ManageClientDA>();
 
 //Conection to BD
 builder.Services.AddDbContext<CouponsClientBDContext>(options =>

@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\DA\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CouponsClient.BC\CouponsClient.BC.csproj" />
   </ItemGroup>
 
