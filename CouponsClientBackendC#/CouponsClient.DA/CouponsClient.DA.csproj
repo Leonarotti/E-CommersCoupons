@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Actions\" />
     <Folder Include="Context\" />
-    <Folder Include="DataModels\" />
   </ItemGroup>
 
   <ItemGroup>
