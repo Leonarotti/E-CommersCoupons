@@ -1,13 +1,13 @@
- .modal {
+.modal {
     display: flex;
-     flex-direction: column;
-     background: rgb(212, 220, 248) !important;
-     max-width: 600px;
-max-height: 80%;
-     /* padding: 20px;
-     border-radius: 8px;
-     margin: auto;*/
-}  
+    flex-direction: column;
+    background: #e4ebff !important;
+    max-width: 800px;
+    max-height: 80%;
+    padding: 20px;
+    border-radius: 8px;
+    margin: auto;
+}
 
 .error {
     color: red;
@@ -26,16 +26,19 @@ max-height: 80%;
 .modal form {
     display: flex;
     flex-direction: column;
-    
+
 }
 
 .modal input[type="text"],
 .modal input[type="date"],
 .modal input[type="email"],
+.modal input[type="number"],
 .modal input[type="password"] {
-    padding: 10px;
-    margin: 5px 0;
-    font-size: 16px;
+    width: 100%;
+    margin-bottom: 1em;
+    padding: 0.8em;
+    border-radius: 9px;
+    border: none;
 }
 
 .modal button {

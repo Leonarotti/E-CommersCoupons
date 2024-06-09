@@ -270,7 +270,7 @@ const CouponAndPromotions = () => {
                             <td>{promotion.percentage}%</td>
                             <td>{promotion.start_date}</td>
                             <td>{promotion.end_date}</td>
-                            <td>
+                            <td className='table-actions'>
                                 <button onClick={() => handleEnableToggle(promotion.id_promotion, !promotion.is_enabled)}>
                                     {promotion.is_enabled ? 'Disable' : 'Enable'}
                                 </button>
