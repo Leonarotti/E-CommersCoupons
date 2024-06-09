@@ -2,7 +2,9 @@ using CouponsClient.BC.Constant;
 using CouponsClient.BW.Interfaces.BW;
 using CouponsClient.BW.Interfaces.SG;
 using CouponsClient.BW.UseCases;
+using CouponsClient.DA.Context;
 using CouponsClient.SG;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,14 +43,13 @@ builder.Services.AddTransient<IManageCategoryBW, ManageCategoryBW>();
 //builder.Services.AddTransient<IManageConcertDA, ManageConcertDA>();
 //builder.Services.AddTransient<IManageZoneDA, ManageZoneDA>();
 
-////Conexión a BD
-//builder.Services.AddDbContext<Context>(options =>
-//{
-//    // Usar la cadena de conexión desde la configuración
-//    var connectionString = builder.Configuration.GetConnectionString("ConcertTicketsDB");
-//    options.UseSqlServer(connectionString);
-//    // Otros ajustes del contexto de base de datos pueden ser configurados aquí, si es necesario
-//});
+//Conection to BD
+builder.Services.AddDbContext<CouponsClientBDContext>(options =>
+{
+    // Usar la cadena de conexión desde la configuración
+    var connectionString = builder.Configuration.GetConnectionString("CouponsClientBD");
+    options.UseSqlServer(connectionString);
+});
 
 var app = builder.Build();
 
