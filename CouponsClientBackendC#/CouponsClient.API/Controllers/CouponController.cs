@@ -1,4 +1,5 @@
-﻿using CouponsClient.BC.Models;
+﻿using CouponsClient.API.Mappers;
+using CouponsClient.BC.Models;
 using CouponsClient.BW.Interfaces.BW;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,8 @@ namespace CouponsClient.API.Controllers
         {
             try
             {
-                return Ok(await _manageCouponBW.GetCoupons());
+                var coupons = await _manageCouponBW.GetCoupons();
+                return Ok(CouponDTOMapper.CouponsMapToCouponsDTO(coupons));
             }
             catch (Exception ex)
             {

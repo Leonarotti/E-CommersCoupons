@@ -1,4 +1,5 @@
-﻿using CouponsClient.BW.Interfaces.BW;
+﻿using CouponsClient.API.Mappers;
+using CouponsClient.BW.Interfaces.BW;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,8 @@ namespace CouponsClient.API.Controllers
         {
             try
             {
-                return Ok(await _manageCategoryBW.GetCategories());
+                var categories = await _manageCategoryBW.GetCategories();
+                return Ok(CategoryDTOMapper.CategoriesMapToCategoriesDTO(categories));
             }
             catch (Exception ex)
             {

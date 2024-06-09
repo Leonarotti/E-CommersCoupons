@@ -11,11 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
-    <Folder Include="Mappers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CouponsClient.BC\CouponsClient.BC.csproj" />
     <ProjectReference Include="..\CouponsClient.BW\CouponsClient.BW.csproj" />
     <ProjectReference Include="..\CouponsClient.DA\CouponsClient.DA.csproj" />
