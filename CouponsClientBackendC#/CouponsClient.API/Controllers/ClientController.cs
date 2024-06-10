@@ -17,7 +17,7 @@ namespace CouponsClient.API.Controllers
             _manageClientBW = manageClientBW;
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> RegisterClient(ClientDTO clientDTO)
         {
             try
@@ -32,13 +32,17 @@ namespace CouponsClient.API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("signIn")]
         public async Task<IActionResult> LoginClient(LoginClientDTO loginClientDTO)
         {
             try
             {
                 var loginClient = ClientDTOMapper.LoginClientDTOToLoginClientMap(loginClientDTO);
                 var client = await _manageClientBW.SignIn(loginClient);
+                if (client == null)
+                {
+                    return NotFound("Usuario o contraseña incorrectos");
+                }
                 return Ok(ClientDTOMapper.ClientMapToClientDTO(client));
             }
             catch (Exception ex)

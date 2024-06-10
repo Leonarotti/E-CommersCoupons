@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registrarse</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label position="floating">DNI</ion-label>
+      <ion-input [(ngModel)]="client.dni"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input [(ngModel)]="client.name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Apellido</ion-label>
+      <ion-input [(ngModel)]="client.lastname"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Fecha de Nacimiento</ion-label>
+      <ion-datetime presentation="date" displayFormat="DD-MM-YYYY" [(ngModel)]="client.birth_date"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Correo Electrónico</ion-label>
+      <ion-input [(ngModel)]="client.email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input type="password" [(ngModel)]="client.password"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-button 
+  expand="block"
+  class="button-register"
+  shape="round"
+    (click)="register()"
+  >Registrarse</ion-button>
+  <ion-button
+    expand="block"
+    color="medium"
+    class="button-back"
+    shape="round"
+    routerLink="/login"
+    (click)="clearFields()"
+  >Volver</ion-button>
+</ion-content>
