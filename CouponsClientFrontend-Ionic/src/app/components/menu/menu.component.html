@@ -7,7 +7,8 @@
       <ion-avatar aria-hidden="true" slot="start">
         <img alt="" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
       </ion-avatar>
-      <ion-label>{{usuario?.name + " " + usuario?.lastname}}</ion-label>
+      <ion-label>{{client?.name + " " + client?.lastname}}</ion-label>
+      <!-- si usario == null "Anonimo" -->
     </ion-item>
   </ion-header>
   <ion-content class="ion-padding">
@@ -16,10 +17,14 @@
         <ion-label routerLink="/home">Comprar Cupones</ion-label>
       </ion-item>
       <ion-item>
+        <ion-label (click)="closeMenu()" routerLink="/cart">Carrito de compras</ion-label>
+      </ion-item>
+      <ion-item>
         <ion-label (click)="closeMenu()" routerLink="/profile">Mis Cupones</ion-label>
       </ion-item>
       <ion-item>
-        <ion-label (click)="closeMenu(); logout()" routerLink="/login" color="danger">Cerrar Sesión</ion-label>
+        <ion-label (click)="closeMenu(); logout()" routerLink="/home" color="danger">Cerrar Sesión</ion-label>
+        <!-- si sesión esta iniciada "Cerrar Sesión" : "Iniciar Sesión" -->
       </ion-item>
     </ion-list>
   </ion-content>

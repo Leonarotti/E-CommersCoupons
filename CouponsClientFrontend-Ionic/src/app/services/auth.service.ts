@@ -7,7 +7,7 @@ import * as forge from 'node-forge';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://localhost:7125/api/Client/'; // URL de la API
+  private apiUrl = 'https://localhost:7125/api/Client'; // URL de la API
 
   constructor(private http: HttpClient, private storage: Storage) {
     this.init();
@@ -40,7 +40,7 @@ export class AuthService {
 
   login(email: string, password: string) {
     const encryptedPassword = this.encryptPassword(password);
-    return this.http.post(`${this.apiUrl}/signIn`, { email, password: encryptedPassword });
+    return this.http.post(`${this.apiUrl}/signIn`, { email, password: password });
   }
 
   async saveSessionData(key: string, data: any): Promise<void> {
@@ -53,5 +53,6 @@ export class AuthService {
 
   async logout(): Promise<void> {
     await this.storage.remove('user');
+    // await this.storage.remove('cart');
   }
 }

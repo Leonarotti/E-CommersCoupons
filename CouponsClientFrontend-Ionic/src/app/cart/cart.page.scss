@@ -1,0 +1,44 @@
+ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+  }
+  
+  .price-details {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  ion-note {
+    margin-bottom: 5px;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+  
+  ion-button {
+    margin: 0 5px;
+    width: auto;
+  }
+  
+  @media (max-width: 768px) {
+    .price-details {
+      text-align: left;
+      margin-top: 10px;
+    }
+  
+    .button-group {
+      justify-content: flex-start;
+      margin-top: 10px;
+    }
+  
+    ion-button {
+      flex: 1;
+      margin: 5px 0;
+    }
+  }
+  

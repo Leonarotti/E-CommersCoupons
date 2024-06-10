@@ -1,34 +1,62 @@
-<div class="ion-page" id="main-content" >
+<div class="ion-page" id="main-content">
   <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-title>Cupones</ion-title>
+      <ion-buttons slot="end">
+        <ion-button routerLink="/cart">
+          <ion-icon name="cart"></ion-icon>
+        </ion-button>
+      </ion-buttons>
       <ion-progress-bar type="indeterminate" *ngIf="!charge"></ion-progress-bar>
     </ion-toolbar>
+    <ion-toolbar>
+      <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterCoupons()"></ion-searchbar>
+      <ion-select [(ngModel)]="selectedCategory" (ionChange)="filterCoupons()">
+        <ion-select-option value="">Todas las categorías</ion-select-option>
+        <ion-select-option *ngFor="let category of categories" [value]="category.categoryId">{{category.name}}</ion-select-option>
+      </ion-select>
+    </ion-toolbar>
   </ion-header>
+
   <ion-content class="ion-padding">
-      <!-- <ion-card *ngFor="let concierto of conciertos; let index" (click)="getIdConcert(concierto.id_Concierto)">
-        <img alt="" src="{{concierto.imagen_URL}}" />
-        <ion-card-header>
-          <ion-card-title>{{concierto.fecha}}</ion-card-title>
-          <ion-card-subtitle>{{concierto.artista}}</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-          {{concierto.lugar}}
-        </ion-card-content>
-      </ion-card> -->
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="6" *ngFor="let coupon of filteredCoupons">
+          <ion-card>
+            <div class="discount-badge">{{ coupon.percentageDiscount }}%</div>
+            <img [src]="coupon.img" alt="" />
+            <ion-card-header>
+              <ion-card-title>{{ coupon.name }}</ion-card-title>
+              <ion-card-subtitle>{{ coupon.enterprise }}</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <p>Ubicación: {{ coupon.location }}</p>
+              <p>
+                Precio regular: <span style="text-decoration: line-through;">{{ coupon.regularPrice | currency }}</span>
+                -> Descuento: {{ coupon.percentageDiscount }}%
+              </p>
+              <p>
+                Precio con descuento: {{
+                  (coupon.regularPrice * (1 - coupon.percentageDiscount / 100)) | currency
+                }}
+              </p>
+              <ion-button expand="block" (click)="addToCart(coupon)">Agregar al carrito</ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
-      <!-- <ion-toast
-        position="top"
-        positionAnchor="header"
-        [isOpen]="isToastOpen"
-        message="Bienvenido(a) {{usuario.nombre}} {{usuario.apellidos}}"
-        [duration]="3000"
-        (didDismiss)="setOpen(false)"
-      ></ion-toast> -->
-    </ion-content>
+    <ion-toast
+      position="bottom"
+      [isOpen]="isToastOpen"
+      message="Cupón agregado al carrito"
+      [duration]="2000"
+      (didDismiss)="setOpen(false)"
+      color="dark"
+    ></ion-toast>
+  </ion-content>
 </div>
-
-

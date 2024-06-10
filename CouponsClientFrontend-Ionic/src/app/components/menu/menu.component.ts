@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnInit {
-  usuario: any;
+  client: any;
 
   constructor(private menuController: MenuController, private authService: AuthService) {}
 

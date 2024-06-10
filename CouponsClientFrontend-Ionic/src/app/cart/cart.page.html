@@ -1,0 +1,62 @@
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Carrito de Compras</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-grid>
+      <ion-row *ngFor="let item of cart; let i = index">
+        <ion-col size="12">
+          <ion-card>
+            <ion-card-content>
+              <ion-row>
+                <ion-col size="12" size-md="8">
+                  <ion-item lines="none">
+                    <ion-label>
+                      <h2>Código: {{ item.couponId }}</h2>
+                      <p>{{ item.name }}</p>
+                    </ion-label>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="12" size-md="4" class="price-details">
+                  <ion-note>{{ (item.regularPrice * (1 - item.percentageDiscount / 100)) | currency }}</ion-note>
+                  <ion-note>x {{ item.quantity }}</ion-note>
+                  <ion-note>Subtotal: {{ (item.regularPrice * (1 - item.percentageDiscount / 100)) * item.quantity | currency }}</ion-note>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12" class="button-group">
+                  <ion-button fill="outline" (click)="increaseQuantity(i)">+</ion-button>
+                  <ion-button fill="outline" (click)="decreaseQuantity(i)" [disabled]="item.quantity === 1">-</ion-button>
+                  <ion-button fill="clear" color="danger" (click)="removeItem(i)">Eliminar</ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label>Total: {{ total | currency }}</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>Impuesto (13%): {{ tax | currency }}</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>Monto Total: {{ totalWithTax | currency }}</ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-button expand="block" (click)="checkout()">Pagar</ion-button>
+
+  </ion-content>
+</div>
