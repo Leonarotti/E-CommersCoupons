@@ -11,7 +11,7 @@
         public string img { get; set; }
         public string location { get; set; }
         public decimal regularPrice { get; set; }
-        public int percentage { get; set; }
+        public int percentageDiscount { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
 

@@ -18,7 +18,7 @@ namespace CouponsClient.API.Mappers
                 img = coupon.img,
                 location = coupon.location,
                 regularPrice = coupon.regular_price,
-                percentage = coupon.percentage,
+                percentageDiscount = coupon.percentage,
                 startDate = coupon.start_date,
                 endDate = coupon.end_date
             };
