@@ -17,7 +17,7 @@ export class MenuComponent implements OnInit {
   }
 
   async loadUserData() {
-   // this.usuario = await this.authService.getSessionData('user');
+    this.client = await this.authService.getSessionData('client');
   }
 
   closeMenu() {
@@ -26,5 +26,6 @@ export class MenuComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+    this.client = null;
   }
 }

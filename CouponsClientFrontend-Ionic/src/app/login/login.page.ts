@@ -20,9 +20,10 @@ export class LoginPage {
     }
 
     this.authService.login(this.email, this.password).subscribe(
-      (usuario) => {
-        if (usuario) {
-          this.authService.saveSessionData('user', usuario);
+      (client) => {
+        if (client) {
+          this.authService.saveSessionData('client', client);
+          //console.log('Usuario logueado:', client);
           this.router.navigate(['/home']);
         } else {
           alert('Correo electrónico o contraseña incorrectos.');

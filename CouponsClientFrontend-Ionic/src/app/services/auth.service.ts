@@ -33,14 +33,15 @@ export class AuthService {
   }
 
   register(client: any) {
-    const encryptedPassword = this.encryptPassword(client.password);
-    client.password = encryptedPassword;
+    // const encryptedPassword = this.encryptPassword(client.password);
+    // client.password = encryptedPassword;
     return this.http.post(`${this.apiUrl}/register`, client);
   }
 
   login(email: string, password: string) {
-    const encryptedPassword = this.encryptPassword(password);
-    return this.http.post(`${this.apiUrl}/signIn`, { email, password: password });
+    // const encryptedPassword = this.encryptPassword(password);
+    // return this.http.post(`${this.apiUrl}/signIn`, { email, password: encryptedPassword });
+    return this.http.post(`${this.apiUrl}/signIn`, { email, password});
   }
 
   async saveSessionData(key: string, data: any): Promise<void> {
@@ -52,7 +53,7 @@ export class AuthService {
   }
 
   async logout(): Promise<void> {
-    await this.storage.remove('user');
-    // await this.storage.remove('cart');
+    await this.storage.remove('client');
+    localStorage.removeItem('cart');
   }
 }
