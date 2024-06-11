@@ -18,7 +18,6 @@ export class AuthService {
   }
 
   encryptPassword(password: string): string {
-    const rsa = forge.pki.rsa;
     const publicKey = forge.pki.publicKeyFromPem(`-----BEGIN PUBLIC KEY-----
     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5G/6kK8Y8WV2H5aKZow+
     HyldgnOnOWb99SjdJzgbzQ+gxeMEk2D0zpqWxDCYQJdBzHgGllxszRMeV/81H/S1
@@ -28,7 +27,7 @@ export class AuthService {
     xz2uCuB+frH8AI9V0l45SAoQL1AORQpzrjzToGJJxCCMDbI0i5BbOSleMHF2+RIt
     VwIDAQAB
     -----END PUBLIC KEY-----`);
-    const encrypted = publicKey.encrypt(password);
+    const encrypted = publicKey.encrypt(password, 'RSA-OAEP');
     return forge.util.encode64(encrypted);
   }
 
@@ -54,6 +53,11 @@ export class AuthService {
 
   async logout(): Promise<void> {
     await this.storage.remove('client');
-    localStorage.removeItem('cart');
+    await localStorage.removeItem('cart');
+  }
+
+  async isLoggedIn(): Promise<boolean> {
+    const client = await this.getSessionData('client');
+    return client !== null;
   }
 }

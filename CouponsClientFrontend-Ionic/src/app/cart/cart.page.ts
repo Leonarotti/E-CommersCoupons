@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewWillEnter } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -13,7 +14,7 @@ export class CartPage implements OnInit, ViewWillEnter {
   tax: number = 0;
   totalWithTax: number = 0;
 
-  constructor() {}
+  constructor(private router:Router) {}
 
   ngOnInit() {
     this.loadCart();
@@ -57,8 +58,10 @@ export class CartPage implements OnInit, ViewWillEnter {
   }
 
   checkout() {
-    // localStorage.removeItem('cart'); // Remove cart after checkout
-    // this.cart = [];
-    // this.calculateTotal();
+    this.router.navigate(['/checkout'], {
+      state: {
+        totalWithTax: this.totalWithTax
+      }
+    });
   }
 }

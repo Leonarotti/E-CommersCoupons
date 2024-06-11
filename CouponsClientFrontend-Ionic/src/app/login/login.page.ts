@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
@@ -7,11 +7,19 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage {
+export class LoginPage implements OnInit{
   email: string = '';
   password: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit() {
+    this.authService.isLoggedIn().then((loggedIn) => {
+      if (loggedIn) {
+        this.router.navigate(['/home']);
+      }
+    });
+  }
 
   login() {
     if (this.email.trim() === '' || this.password.trim() === '') {
@@ -23,8 +31,7 @@ export class LoginPage {
       (client) => {
         if (client) {
           this.authService.saveSessionData('client', client);
-          //console.log('Usuario logueado:', client);
-          this.router.navigate(['/home']);
+          window.location.reload();
         } else {
           alert('Correo electrónico o contraseña incorrectos.');
         }
