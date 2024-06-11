@@ -19,14 +19,15 @@ export class AuthService {
 
   encryptPassword(password: string): string {
     const publicKey = forge.pki.publicKeyFromPem(`-----BEGIN PUBLIC KEY-----
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5G/6kK8Y8WV2H5aKZow+
-    HyldgnOnOWb99SjdJzgbzQ+gxeMEk2D0zpqWxDCYQJdBzHgGllxszRMeV/81H/S1
-    Kaf3hx3EqaAYm7tWUM1HQ+13PQ6G/QIYVz0XSLuV2qGoF1EwskAxnJ/xIMJbF2yZ
-    4mTXJ+76gNcHTI2YqfLZsDxi7bXjuS2bBxyk7Fd3M3QZ+vvk6G3f3ZepHJynY4Bz
-    jqkJEFnbRj02erBk4ukGmf0x0+/rYDFEBiUIh19FY3lq2BDQzYrkTSmNexqT1ZVP
-    xz2uCuB+frH8AI9V0l45SAoQL1AORQpzrjzToGJJxCCMDbI0i5BbOSleMHF2+RIt
-    VwIDAQAB
-    -----END PUBLIC KEY-----`);
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqhNIV5l2G7y/enk+qDu8
+VA0LD2dOTHlzrMFH+a4PIK1kWhxnWWoN6N1wOBrz7haa7nf6WFSt9run2GfaIRxx
+10Ax2YUoLs1QkkzjouuBv1/pvR6hBtvQ7bjTrJTyYiHO2CXn6lPeqxHgK5Aizrls
+6BYqjR6+/cjunr0U+u3oyBc+0oITBFGOqGBX36QTKbm54oO9NevpzZEPh+aCmOEW
+fVBUxRoU9U7QuFObr72VLQdcNw2JK2TYKOdTRnG1waL+ZgCaFjtJzbrb3xGCLCni
+0FyVKPuTbVUPaWKIvIetx6abIOQENF25QuZGGY6XUFYYC8O+u1eDHsSJ924qo3ZI
+SQIDAQAB
+-----END PUBLIC KEY-----
+`);
     const encrypted = publicKey.encrypt(password, 'RSA-OAEP');
     return forge.util.encode64(encrypted);
   }

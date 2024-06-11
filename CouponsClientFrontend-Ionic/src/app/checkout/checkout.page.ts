@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } fro
 import { Router } from '@angular/router';
 import * as forge from 'node-forge';
 import { AuthService } from '../services/auth.service';
+import { SaleService } from '../services/sale.service';
 
 @Component({
   selector: 'app-checkout',
@@ -14,7 +15,7 @@ export class CheckoutPage implements OnInit {
   totalWithTax: number = 0;
   clientId: number = 0;
 
-  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService, private saleService: SaleService) {
     this.checkoutForm = this.fb.group({
       cardHolderName: ['', Validators.required],
       cardNumber: ['', [Validators.required, this.luhnValidator]],
@@ -41,15 +42,18 @@ export class CheckoutPage implements OnInit {
         clientId: this.clientId,
         cardNumber: encryptedCardNumber,
         totalAmount: this.totalWithTax,
-        cart: this.loadCart(),
+        couponsSale: this.loadCart(),
       };
 
       console.log(saleData);
 
-      // Lógica para enviar los datos de la compra al servidor
-      // this.purchaseService.processPurchase(purchaseData).subscribe(response => {
-      //   // Manejar la respuesta del servidor
-      // });
+      this.saleService.processSale(saleData).subscribe(response => {
+        console.log(response);
+        localStorage.removeItem('cart');
+        //this.router.navigate(['/home']);
+      }, error => {
+        console.log(error);
+      });
     }
   }
 
@@ -60,18 +64,22 @@ export class CheckoutPage implements OnInit {
   loadCart() {
     return JSON.parse(localStorage.getItem('cart') || '[]');
   }
-  
+
   encryptCardNumber(cardNumber: string): string {
-    const publicKey = forge.pki.publicKeyFromPem(`-----BEGIN PUBLIC KEY-----
-      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5G/6kK8Y8WV2H5aKZow+
-      HyldgnOnOWb99SjdJzgbzQ+gxeMEk2D0zpqWxDCYQJdBzHgGllxszRMeV/81H/S1
-      Kaf3hx3EqaAYm7tWUM1HQ+13PQ6G/QIYVz0XSLuV2qGoF1EwskAxnJ/xIMJbF2yZ
-      4mTXJ+76gNcHTI2YqfLZsDxi7bXjuS2bBxyk7Fd3M3QZ+vvk6G3f3ZepHJynY4Bz
-      jqkJEFnbRj02erBk4ukGmf0x0+/rYDFEBiUIh19FY3lq2BDQzYrkTSmNexqT1ZVP
-      xz2uCuB+frH8AI9V0l45SAoQL1AORQpzrjzToGJJxCCMDbI0i5BbOSleMHF2+RIt
-      VwIDAQAB
-      -----END PUBLIC KEY-----`);
-    const encrypted = publicKey.encrypt(cardNumber, 'RSA-OAEP');
+    const publicKeyPem = `-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqhNIV5l2G7y/enk+qDu8
+VA0LD2dOTHlzrMFH+a4PIK1kWhxnWWoN6N1wOBrz7haa7nf6WFSt9run2GfaIRxx
+10Ax2YUoLs1QkkzjouuBv1/pvR6hBtvQ7bjTrJTyYiHO2CXn6lPeqxHgK5Aizrls
+6BYqjR6+/cjunr0U+u3oyBc+0oITBFGOqGBX36QTKbm54oO9NevpzZEPh+aCmOEW
+fVBUxRoU9U7QuFObr72VLQdcNw2JK2TYKOdTRnG1waL+ZgCaFjtJzbrb3xGCLCni
+0FyVKPuTbVUPaWKIvIetx6abIOQENF25QuZGGY6XUFYYC8O+u1eDHsSJ924qo3ZI
+SQIDAQAB
+-----END PUBLIC KEY-----
+`;
+    const publicKey = forge.pki.publicKeyFromPem(publicKeyPem);
+    const encrypted = publicKey.encrypt(cardNumber, 'RSA-OAEP', {
+      md: forge.md.sha256.create()
+    });
     return forge.util.encode64(encrypted);
   }
 
@@ -109,5 +117,4 @@ export class CheckoutPage implements OnInit {
     }
     return null;
   }
-
 }
