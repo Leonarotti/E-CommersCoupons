@@ -17,7 +17,6 @@ namespace CouponsClient.DA.DataModels
         public int id_coupon { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(10, 2)")]
         public decimal regular_price { get; set; }
 
         [Required]
@@ -27,7 +26,6 @@ namespace CouponsClient.DA.DataModels
         public int quantity { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(10, 2)")]
         public decimal subtotal { get; set; }
 
 

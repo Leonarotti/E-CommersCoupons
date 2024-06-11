@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace CouponsClient.BC.Models
 {
-    public class Sale
+    public class CouponsSaleCart
     {
-        public int? SaleId { get; set; }
         public int ClientId { get; set; }
         public string CardNumber { get; set; }
-        public DateTime SaleDate { get; set; }
-        public decimal Total { get; set; }
+        public decimal TotalAmount { get; set; }
+        public IEnumerable<CouponSale> CouponsSale { get; set; }
     }
 }

@@ -18,7 +18,9 @@ namespace CouponsClient.DA.DataModels
         public DateTime sale_date { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(10, 2)")]
+        public string card_number { get; set; }
+
+        [Required]
         public decimal total { get; set; }
 
 

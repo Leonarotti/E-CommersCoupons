@@ -46,7 +46,7 @@ builder.Services.AddTransient<IManageClientBW, ManageClientBW>();
 builder.Services.AddTransient<IManageClientDA, ManageClientDA>();
 
 //Conection to BD
-builder.Services.AddDbContext<CouponsClientBDContext>(options =>
+builder.Services.AddDbContext<CouponsClientDBContext>(options =>
 {
     // Usar la cadena de conexión desde la configuración
     var connectionString = builder.Configuration.GetConnectionString("CouponsClientBD");

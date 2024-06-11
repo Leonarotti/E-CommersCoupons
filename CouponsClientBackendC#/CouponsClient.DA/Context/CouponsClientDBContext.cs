@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CouponsClient.DA.Context
 {
-    public class CouponsClientBDContext : DbContext
+    public class CouponsClientDBContext : DbContext
     {
-        public CouponsClientBDContext(DbContextOptions<CouponsClientBDContext> options) : base(options) { }
+        public CouponsClientDBContext(DbContextOptions<CouponsClientDBContext> options) : base(options) { }
 
         public DbSet<ClientDA> Clients { get; set; }
         public DbSet<SaleDA> Sales { get; set; }

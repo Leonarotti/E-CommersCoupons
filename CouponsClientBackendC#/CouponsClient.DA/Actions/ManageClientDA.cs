@@ -13,9 +13,9 @@ namespace CouponsClient.DA.Actions
 {
     public class ManageClientDA : IManageClientDA
     {
-        private readonly CouponsClientBDContext _context;
+        private readonly CouponsClientDBContext _context;
 
-        public ManageClientDA(CouponsClientBDContext context)
+        public ManageClientDA(CouponsClientDBContext context)
         {
             _context = context;
         }
