@@ -1,5 +1,6 @@
 USE master
 GO
+--DROP DATABASE CouponsClientBD
 CREATE DATABASE CouponsClientBD
 GO
 USE CouponsClientBD
@@ -17,6 +18,7 @@ CREATE TABLE client (
 CREATE TABLE sale (
     id_sale INT PRIMARY KEY IDENTITY,
     id_client INT NOT NULL FOREIGN KEY REFERENCES client(id_client),
+	card_number varchar(30) NOT NULL,
     sale_date DATETIME NOT NULL,
     total DECIMAL(10, 2) NOT NULL
 );
