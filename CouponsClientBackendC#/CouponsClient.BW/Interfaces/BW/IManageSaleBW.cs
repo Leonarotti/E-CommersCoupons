@@ -12,7 +12,7 @@ namespace CouponsClient.BW.Interfaces.BW
         Task<int> RegisterSale(Sale sale);
         Task<bool> DeleteSale(int saleId);
         Task<bool> RegisterSaleDetails(IEnumerable<SaleDetail> saleDetails);
-        Task<bool> ManagaSalesRecordWithDetails(CouponsSaleCart couponsSaleCart);
+        Task<bool> ProcessSaleRecordWithDetails(CouponsSaleCart couponsSaleCart);
 
     }
 }

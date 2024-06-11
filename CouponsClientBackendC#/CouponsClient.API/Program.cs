@@ -42,8 +42,10 @@ builder.Services.AddTransient<IManageCouponBW, ManageCouponBW>();
 builder.Services.AddTransient<IManageCategoryBW, ManageCategoryBW>();
 
 builder.Services.AddTransient<IManageClientBW, ManageClientBW>();
+builder.Services.AddTransient<IManageSaleBW, ManageSaleBW>();
 
 builder.Services.AddTransient<IManageClientDA, ManageClientDA>();
+builder.Services.AddTransient<IManageSaleDA, ManageSaleDA>();
 
 //Conection to BD
 builder.Services.AddDbContext<CouponsClientDBContext>(options =>

@@ -1,4 +1,5 @@
-﻿using CouponsClient.BC.Models;
+﻿using CouponsClient.BC.BusinessLogic;
+using CouponsClient.BC.Models;
 using CouponsClient.BW.Interfaces.BW;
 using CouponsClient.BW.Interfaces.DA;
 using System;
@@ -36,17 +37,27 @@ namespace CouponsClient.BW.UseCases
             //validaciones
         }
 
-        public async Task<bool> ManagaSalesRecordWithDetails(CouponsSaleCart couponsSaleCart)
+        public async Task<bool> ProcessSaleRecordWithDetails(CouponsSaleCart couponsSaleCart)
         {
+            var cardNumber = new Encryptor().Decrypt(couponsSaleCart.CardNumber);
 
-            //desencriptar tarjeta
+            if (cardNumber == null)
+            {
+                return false;
+            }
 
+            cardNumber = Masking.MaskCardNumber(cardNumber);
+
+            if (string.IsNullOrEmpty(cardNumber))
+            {
+                return false;
+            }
 
             var sale = new Sale
             {
                 ClientId = couponsSaleCart.ClientId,
                 SaleDate = DateTime.Now,
-                CardNumber = couponsSaleCart.CardNumber,
+                CardNumber = cardNumber,
                 Total = couponsSaleCart.TotalAmount
             };
 
@@ -63,7 +74,7 @@ namespace CouponsClient.BW.UseCases
                 RegularPrice = c.regular_price,
                 Percentage = c.percentage,
                 Quantity = c.quantity,
-                Subtotal = (c.regular_price * (c.percentage/100)) * c.quantity
+                Subtotal = c.regular_price * (1 - ((decimal)c.percentage / 100)) * c.quantity
             });
 
             var response = await RegisterSaleDetails(saleDetails);

@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="BusinessLogic\" />
     <Folder Include="BusinessRules\" />
     <Folder Include="Enumerated\" />
   </ItemGroup>
