@@ -29,5 +29,10 @@ namespace CouponsClient.BW.UseCases
 
             return await _manageClientDA.SignIn(loginClient);
         }
+
+        public async Task<Client> GetClientById(int clientId)
+        {
+            return await _manageClientDA.GetClientById(clientId);
+        }
     }
 }

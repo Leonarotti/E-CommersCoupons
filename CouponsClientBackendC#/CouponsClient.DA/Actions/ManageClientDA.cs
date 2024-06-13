@@ -75,5 +75,22 @@ namespace CouponsClient.DA.Actions
             };
         }
 
+        public async Task<Client> GetClientById(int clientId)
+        {
+            return await _context.Clients
+                .Where(c => c.id_client == clientId)
+                .Select(c => new Client
+                {
+                    ClientId = c.id_client,
+                    Dni = c.dni,
+                    Name = c.name,
+                    Lastname = c.lastname,
+                    BirthDate = c.birth_date,
+                    Email = c.email,
+                    Password = c.password
+                })
+                .FirstOrDefaultAsync();
+        }
+
     }
 }

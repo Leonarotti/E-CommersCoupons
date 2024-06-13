@@ -13,10 +13,12 @@ namespace CouponsClient.BW.UseCases
     public class ManageSaleBW : IManageSaleBW
     {
         private readonly IManageSaleDA _manageSaleDA;
+        private readonly IManageClientBW _manageClientBW;
 
-        public ManageSaleBW(IManageSaleDA manageSaleDA)
+        public ManageSaleBW(IManageSaleDA manageSaleDA, IManageClientBW manageClientBW)
         {
             _manageSaleDA = manageSaleDA;
+            _manageClientBW = manageClientBW;
         }
 
         public async Task<int> RegisterSale(Sale sale)
@@ -36,6 +38,13 @@ namespace CouponsClient.BW.UseCases
 
         public async Task<bool> ProcessSaleRecordWithDetails(CouponsSaleCart couponsSaleCart)
         {
+            Client client = await _manageClientBW.GetClientById(couponsSaleCart.ClientId);
+
+            if (client == null)
+            {
+                return false;
+            }
+
             var cardNumber = new Encryptor().Decrypt(couponsSaleCart.CardNumber);
 
             if (cardNumber == null)
@@ -81,6 +90,20 @@ namespace CouponsClient.BW.UseCases
                 await DeleteSale(saleId);
                 return false;
             }
+
+            var saleBill = new SaleBill
+            {
+                Client = client,
+                Sale = sale,
+                SaleDetails = saleDetails
+            };
+
+            // Generar el PDF en memoria con los datos de la venta
+            var pdfStream = GeneratorPDF.GeneratePDF(saleBill);
+
+            // Enviar el correo con el PDF adjunto
+            string recipientEmail = client.Email;
+            SendingEmails.SendEmailWithPDF(recipientEmail, pdfStream);
 
             return true;
         }

@@ -14,6 +14,7 @@ export class CheckoutPage implements OnInit {
   checkoutForm: FormGroup;
   totalWithTax: number = 0;
   clientId: number = 0;
+  isToastOpen = false;
 
   constructor(private fb: FormBuilder, private router: Router, private authService: AuthService, private saleService: SaleService) {
     this.checkoutForm = this.fb.group({
@@ -50,7 +51,7 @@ export class CheckoutPage implements OnInit {
       this.saleService.processSale(saleData).subscribe(response => {
         console.log(response);
         localStorage.removeItem('cart');
-        //this.router.navigate(['/home']);
+        this.showSuccessToast();
       }, error => {
         console.log(error);
       });
@@ -116,5 +117,18 @@ SQIDAQAB
       return { expiryDate: true };
     }
     return null;
+  }
+
+  showSuccessToast() {
+    this.isToastOpen = true;
+  }
+
+  handleToastButtonClick() {
+    this.isToastOpen = false;
+    this.router.navigate(['/home']);
+  }
+
+  setOpen(isOpen: boolean) {
+    this.isToastOpen = isOpen;
   }
 }

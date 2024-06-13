@@ -11,5 +11,6 @@ namespace CouponsClient.BW.Interfaces.BW
     {
         Task<bool> RegisterClient(Client client);
         Task<Client> SignIn(LoginClient loginClient);
+        Task<Client> GetClientById(int clientId);
     }
 }

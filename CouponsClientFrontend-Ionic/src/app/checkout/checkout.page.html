@@ -30,5 +30,16 @@
       </ion-item>
       <ion-button expand="full" type="submit" [disabled]="!checkoutForm.valid">Pagar</ion-button>
     </form>
+
+    <ion-toast
+      position="bottom"
+      [isOpen]="isToastOpen"
+      message="Su compra ha sido realizada con éxito, recibirá un correo con la factura."
+      [duration]="0"
+      color="dark"
+      translucent="true"
+    >
+      <ion-button (click)="handleToastButtonClick()">Aceptar</ion-button>
+    </ion-toast>
   </ion-content>
 </div>
