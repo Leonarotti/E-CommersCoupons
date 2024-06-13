@@ -69,6 +69,9 @@ class EnterpriseBusiness {
         if (!$this->isValidId($id)) {
             return 'ID de empresa requerido para cambiar estado.';
         }
+        if(!$is_enabled){
+            $this->enterpriseData->disableCouponsAndPromotionsByEnterpriseId($id) ? true : 'Error al cambiar estado de empresa.';
+        }
         return $this->enterpriseData->setEnabled($id, $is_enabled) ? true : 'Error al cambiar estado de empresa.';
     }
 

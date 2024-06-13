@@ -243,7 +243,7 @@ const EnterpriseAndCoupons = () => {
                 />
                 {backendErrors.email && <span className="error">{backendErrors.email}</span>}
 
-                <label>
+                {/* <label>
                     <input
                         type="checkbox"
                         name="is_enabled"
@@ -252,7 +252,7 @@ const EnterpriseAndCoupons = () => {
                         disabled={!editMode}
                     />
                     Enabled
-                </label>
+                </label> */}
 
                 {editMode && <button type="submit">Update</button>}
                 {!editMode && <button type="button" onClick={() => setEditMode(true)}>Edit</button>}
@@ -288,9 +288,11 @@ const EnterpriseAndCoupons = () => {
                             <td>{coupon.end_date}</td>
                            
                             <td>
-                                <button className="btn btn-secondary btn-sm" onClick={() => handleEnableToggle(coupon.id_coupon, !coupon.is_enabled)}>
-                                    {coupon.is_enabled ? 'Disable' : 'Enable'}
-                                </button>
+                            {enterprise.is_enabled && (
+                                   <button className="btn btn-secondary btn-sm" onClick={() => handleEnableToggle(coupon.id_coupon, !coupon.is_enabled)}>
+                                   {coupon.is_enabled ? 'Disable' : 'Enable'}
+                               </button>
+                                )}
                                 <button className="btn btn-warning btn-sm edit"  onClick={() => handleEditCoupon(coupon)} >Edit</button>
                                 <button className="btn btn-primary btn-sm manage" onClick={() => handleManageCoupon(coupon.id_coupon)}>Manage Coupon</button>
                             </td>

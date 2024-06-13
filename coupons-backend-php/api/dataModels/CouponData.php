@@ -98,6 +98,17 @@ class CouponData {
         return false;
     }
 
+    public function disablePromotionsByCouponId($id_coupon) {
+        $query = 'CALL spDisablePromotionsByCouponId(:id_coupon)';
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id_coupon', $id_coupon, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
     public function getCouponsWithDetails() {
         $query = 'CALL spGetCouponsWithDetails()';
         $stmt = $this->conn->prepare($query);

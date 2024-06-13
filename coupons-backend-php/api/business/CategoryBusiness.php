@@ -60,6 +60,9 @@ class CategoryBusiness {
         if (!$this->isValidId($id)) {
             return ['error' => 'ID de categoría requerido para cambiar estado.'];
         }
+        if(!$is_enabled){
+            $this->categoryData->disableCouponsAndPromotionsByCategoryId($id) ? true : 'Error al cambiar estado de categoría.';
+        }
         return $this->categoryData->setEnabled($id, $is_enabled) ? true : ['error' => 'Error al cambiar estado de categoría.'];
     }
 
