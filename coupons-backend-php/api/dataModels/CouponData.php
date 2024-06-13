@@ -1,7 +1,7 @@
 <?php
-include_once '../config/Database.php';
-include_once '../domain/Coupon.php';
-include_once '../domain/CouponWithDetails.php';
+include_once BASE_PATH . '/api/config/Database.php';
+include_once BASE_PATH . '/api/domain/Coupon.php';
+include_once BASE_PATH . '/api/domain/CouponWithDetails.php';
 
 class CouponData {
     private $conn;
@@ -103,6 +103,14 @@ class CouponData {
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
+    }
+
+    public function getCouponWithDetailsById($id) {
+        $query = 'CALL spGetCouponWithDetailsById(:id_coupon)';
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id_coupon', $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
 ?>

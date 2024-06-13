@@ -1,5 +1,5 @@
 <?php
-include_once '../dataModels/EnterpriseData.php';
+include_once BASE_PATH . '/api/dataModels/EnterpriseData.php';
 
 class EnterpriseBusiness {
     private $enterpriseData;
@@ -44,7 +44,7 @@ class EnterpriseBusiness {
             return 'Ya existe una empresa con la cédula ' . $data->license;
         }
 
-        $enterprise = new Enterprise(null, $data->name, $data->address, $data->license, $data->date_created, $data->phone, $data->email, $data->password, $data->is_enabled);
+        $enterprise = new Enterprise(0, $data->name, $data->address, $data->license, $data->date_created, $data->phone, $data->email, $data->password, $data->is_enabled);
         return $this->enterpriseData->create($enterprise) ? true : 'Error al crear empresa.';
     }
 

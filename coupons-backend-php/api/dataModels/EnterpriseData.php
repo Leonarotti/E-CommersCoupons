@@ -1,6 +1,6 @@
 <?php
-include_once '../config/Database.php';
-include_once '../domain/Enterprise.php';
+include_once BASE_PATH . '/api/config/Database.php';
+include_once BASE_PATH . '/api/domain/Enterprise.php';
 
 class EnterpriseData {
     private $conn;

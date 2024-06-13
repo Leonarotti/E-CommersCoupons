@@ -1,6 +1,6 @@
 <?php
-include_once '../config/Database.php';
-include_once '../domain/Category.php';
+include_once BASE_PATH . '/api/config/Database.php';
+include_once BASE_PATH . '/api/domain/Category.php';
 
 class CategoryData {
     private $conn;

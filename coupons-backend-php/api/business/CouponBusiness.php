@@ -1,5 +1,5 @@
 <?php
-include_once '../dataModels/CouponData.php';
+include_once BASE_PATH . '/api/dataModels/CouponData.php';
 
 class CouponBusiness {
     private $couponData;
@@ -100,6 +100,33 @@ class CouponBusiness {
             array_push($coupons_arr, $coupon_item);
         }
         return $coupons_arr;
+    }
+
+    public function getCouponWithDetailsById($id) {
+        if (!$this->isValidId($id)) {
+            return ['error' => 'Invalid coupon ID'];
+        }
+
+        $data = $this->couponData->getCouponWithDetailsById($id);
+        if ($data) {
+            return new CouponWithDetails(
+                $data['id_coupon'],
+                $data['id_enterprise'],
+                $data['id_category'],
+                $data['name'],
+                $data['img'],
+                $data['location'],
+                $data['regular_price'],
+                $data['percentage'],
+                $data['start_date'],
+                $data['end_date'],
+                $data['is_enabled'],
+                $data['category'],
+                $data['enterprise']
+            );
+        } else {
+            return null;
+        }
     }
 
     private function validateCouponData($data, $isUpdate = false) {

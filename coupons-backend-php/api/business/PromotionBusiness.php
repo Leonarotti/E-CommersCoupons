@@ -1,5 +1,5 @@
 <?php
-include_once '../dataModels/PromotionData.php';
+include_once BASE_PATH . '/api/dataModels/PromotionData.php';
 
 class PromotionBusiness {
     private $promotionData;
@@ -49,7 +49,7 @@ class PromotionBusiness {
             return $validationResult; // Return the validation error message
         }
 
-        $promotion = new Promotion(null, $data->id_coupon, $data->percentage, $data->start_date, $data->end_date, $data->is_enabled);
+        $promotion = new Promotion(0, $data->id_coupon, $data->percentage, $data->start_date, $data->end_date, $data->is_enabled);
         return $this->promotionData->create($promotion) ? true : 'Error al crear promoción.';
     }
 

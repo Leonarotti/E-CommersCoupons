@@ -1,6 +1,6 @@
 <?php
-include_once '../config/Database.php';
-include_once '../domain/Promotion.php';
+include_once BASE_PATH . '/api/config/Database.php';
+include_once BASE_PATH . '/api/domain/Promotion.php';
 
 class PromotionData {
     private $conn;

@@ -1,5 +1,5 @@
 <?php
-include_once '../dataModels/CategoryData.php';
+include_once BASE_PATH . '/api/dataModels/CategoryData.php';
 
 class CategoryBusiness {
     private $categoryData;
