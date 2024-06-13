@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Net.Mail;
+using System.Net.Mime;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -48,4 +51,70 @@ vWMgSK0GNIypgSWabc2lyfY=
             }
         }
     }
+}
+
+//pruebasleodev@gmail.com
+
+public void SendEmailWithPDF(string recipientEmail, string attachmentPath)
+{
+    try
+    {
+        // Configurar el cliente SMTP para enviar correo electrónico
+        var smtpClient = new SmtpClient("smtp.gmail.com")
+        {
+            Port = 587,
+            Credentials = new NetworkCredential("Su correo", "su contraseña"),
+            EnableSsl = true,
+        };
+
+        // Crear el mensaje de correo electrónico
+        var message = new MailMessage("Su correo", recipientEmail)
+        {
+            Subject = "Ticket de Concierto",
+            Body = "En este correo encontrarás tus tickets de concierto.",
+            IsBodyHtml = true
+        };
+
+        // Adjuntar el PDF al mensaje
+        Attachment attachment = new Attachment(attachmentPath, MediaTypeNames.Application.Pdf);
+        message.Attachments.Add(attachment);
+
+        // Enviar el correo electrónico
+        smtpClient.Send(message);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Error al enviar el correo electrónico: " + ex.Message);
+    }
+}
+   }
+
+       public class TicketService
+{
+    public void GenerateTicketPDF(string filePath, CorreoDTO correoDTO)
+    {
+        // Crear un nuevo documento PDF
+        iTextSharp.text.Document document = new iTextSharp.text.Document();
+        PdfWriter.GetInstance(document, new FileStream(filePath, FileMode.Create));
+        document.Open();
+
+        // Agregar texto al PDF
+        Paragraph paragraph = new Paragraph("Ticket de Concierto");
+        document.Add(paragraph);
+        document.Add(Chunk.NEWLINE); // Agregar un salto de línea
+
+        DateTime fechaticket = DateTime.Now;
+
+        string detailsText = $"Fecha de factura: {fechaticket}\nArtista: {correoDTO.nombreArtista}\nFecha del concierto: {correoDTO.fechaConcierto} \nNumero de asientos:{correoDTO.asientos}\nPrecio total: ¢{correoDTO.montoTotal}";
+        // Agregar los detalles del ticket al PDF
+        Paragraph detailsParagraph = new Paragraph(detailsText);
+        document.Add(detailsParagraph);
+        document.Add(Chunk.NEWLINE); // Agregar un salto de línea
+
+
+
+        // Cerrar el documento
+        document.Close();
+    }
+
 }

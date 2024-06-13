@@ -22,19 +22,16 @@ namespace CouponsClient.BW.UseCases
         public async Task<int> RegisterSale(Sale sale)
         {
             return await _manageSaleDA.RegisterSale(sale);
-            //validaciones
         }
 
         public async Task<bool> DeleteSale(int saleId)
         {
             return await _manageSaleDA.DeleteSale(saleId);
-            //validaciones
         }
 
         public async Task<bool> RegisterSaleDetails(IEnumerable<SaleDetail> saleDetails)
         {
             return await _manageSaleDA.RegisterSaleDetails(saleDetails);
-            //validaciones
         }
 
         public async Task<bool> ProcessSaleRecordWithDetails(CouponsSaleCart couponsSaleCart)
@@ -86,6 +83,16 @@ namespace CouponsClient.BW.UseCases
             }
 
             return true;
+        }
+
+        public async Task<IEnumerable<Sale>> GetSalesByClientId(int clientId)
+        {
+            return await _manageSaleDA.GetSalesByClientId(clientId);
+        }
+
+        public async Task<IEnumerable<SaleDetail>> GetSaleDetailsBySaleId(int saleId)
+        {
+            return await _manageSaleDA.GetSaleDetailsBySaleId(saleId);
         }
     }
 }

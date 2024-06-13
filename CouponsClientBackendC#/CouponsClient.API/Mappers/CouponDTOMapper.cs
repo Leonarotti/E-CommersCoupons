@@ -33,5 +33,38 @@ namespace CouponsClient.API.Mappers
             }
             return couponsDTO;
         }
+
+        public static IEnumerable<CouponSaleWithDetailsDTO> CouponsSaleWithDetailsMapToCouponsSaleWithDetailsDTO(IEnumerable<CouponSaleWithDetails> couponsSaleWithDetails)
+        {
+            List<CouponSaleWithDetailsDTO> couponsSaleWithDetailsDTO = new List<CouponSaleWithDetailsDTO>();
+            foreach (CouponSaleWithDetails couponSaleWithDetails in couponsSaleWithDetails)
+            {
+                couponsSaleWithDetailsDTO.Add(CouponSaleWithDetailsMapToCouponSaleWithDetailsDTO(couponSaleWithDetails));
+            }
+            return couponsSaleWithDetailsDTO;
+        }
+
+        public static CouponSaleWithDetailsDTO CouponSaleWithDetailsMapToCouponSaleWithDetailsDTO(CouponSaleWithDetails couponSaleWithDetails)
+        {
+            return new CouponSaleWithDetailsDTO
+            {
+                couponId = couponSaleWithDetails.CouponId,
+                enterpriseId = couponSaleWithDetails.EnterpriseId,
+                enterprise = couponSaleWithDetails.Enterprise,
+                categoryId = couponSaleWithDetails.CategoryId,
+                category = couponSaleWithDetails.Category,
+                name = couponSaleWithDetails.Name,
+                img = couponSaleWithDetails.Img,
+                location = couponSaleWithDetails.Location,
+                regularPrice = couponSaleWithDetails.RegularPrice,
+                percentage = couponSaleWithDetails.Percentage,
+                quantity = couponSaleWithDetails.Quantity,
+                subtotal = couponSaleWithDetails.Subtotal,
+                saleId = couponSaleWithDetails.SaleId,
+                cardNumber = couponSaleWithDetails.CardNumber,
+                saleDate = couponSaleWithDetails.SaleDate,
+                totalAmount = couponSaleWithDetails.TotalAmount
+            };
+        }
     }
 }

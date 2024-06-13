@@ -1,4 +1,5 @@
-﻿using CouponsClient.BC.Models;
+﻿using CouponsClient.BC.BusinessLogic;
+using CouponsClient.BC.Models;
 using CouponsClient.BW.Interfaces.DA;
 using CouponsClient.DA.Context;
 using CouponsClient.DA.DataModels;
@@ -46,11 +47,20 @@ namespace CouponsClient.DA.Actions
 
         public async Task<Client> SignIn(LoginClient loginClient)
         {
-            ClientDA clientDA = await _context.Clients.FirstOrDefaultAsync(c => c.email == loginClient.Email && c.password == loginClient.Password);
+            var encryptedPassword = new Encryptor().Decrypt(loginClient.Password);
+
+            var clientDA = await _context.Clients.FirstOrDefaultAsync(c => c.email == loginClient.Email);
 
             if (clientDA == null)
             {
-                return null; // (null, message)  "usuario incorrecto, contraseña incorrecta"
+                return null; // Usuario no encontrado
+            }
+
+            var decryptedStoredPassword = new Encryptor().Decrypt(clientDA.password);
+
+            if (encryptedPassword != decryptedStoredPassword)
+            {
+                return null; // Contraseña incorrecta
             }
 
             return new Client
@@ -64,5 +74,6 @@ namespace CouponsClient.DA.Actions
                 Password = clientDA.password
             };
         }
+
     }
 }

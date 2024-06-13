@@ -1,30 +1,11 @@
 ﻿using CouponsClient.API.DTOs;
 using CouponsClient.BC.Models;
+using CouponsClient.DA.DataModels;
 
 namespace CouponsClient.API.Mappers
 {
     public class SaleDTOMapper
     {
-        //public static CouponSaleDTO CouponSaleMapToCouponSaleDTO(CouponSale couponSale)
-        //{
-        //    return new CouponSaleDTO
-        //    {
-        //        couponId = couponSale.id_coupon,
-        //        enterpriseId = couponSale.id_enterprise,
-        //        enterprise = couponSale.enterprise,
-        //        categoryId = couponSale.id_category,
-        //        category = couponSale.category,
-        //        name = couponSale.name,
-        //        img = couponSale.img,
-        //        location = couponSale.location,
-        //        regularPrice = couponSale.regular_price,
-        //        percentageDiscount = couponSale.percentage,
-        //        startDate = couponSale.start_date,
-        //        endDate = couponSale.end_date,
-        //        quantity = couponSale.quantity
-        //    };
-        //}
-
         public static CouponSale CouponSaleDTOMapToCouponSale(CouponSaleDTO couponSaleDTO)
         {
             return new CouponSale
@@ -45,17 +26,6 @@ namespace CouponsClient.API.Mappers
             };
         }
 
-        //public static CouponsSaleCartDTO CouponsSaleCartMapToCouponsSaleCartDTO(CouponsSaleCart couponsSaleCart)
-        //{
-        //    return new CouponsSaleCartDTO
-        //    {
-        //        clientId = couponsSaleCart.ClientId,
-        //        cardNumber = couponsSaleCart.CardNumber,
-        //        totalAmount = couponsSaleCart.TotalAmount,
-        //        couponsSale = (IEnumerable<CouponSale>) couponsSaleCart.CouponsSale.Select(c => CouponSaleMapToCouponSaleDTO(c))
-        //    };
-        //}
-
         public static CouponsSaleCart CouponsSaleCartDTOMapToCouponsSaleCart(CouponsSaleCartDTO couponsSaleCartDTO)
         {
             return new CouponsSaleCart
@@ -65,6 +35,52 @@ namespace CouponsClient.API.Mappers
                 TotalAmount = couponsSaleCartDTO.totalAmount,
                 CouponsSale = couponsSaleCartDTO.couponsSale.Select(c => CouponSaleDTOMapToCouponSale(c))
             };
+        }
+
+        public static SaleDTO SaleMapToSaleDTO(Sale sale)
+        {
+            return new SaleDTO
+            {
+                saleId = sale.SaleId,
+                clientId = sale.ClientId,
+                saleDate = sale.SaleDate,
+                cardNumber = sale.CardNumber,
+                totalAmount = sale.Total
+            };
+        }
+
+        public static IEnumerable<SaleDTO> SalesMapToSalesDTO(IEnumerable<Sale> sales)
+        {
+            List<SaleDTO> salesDTO = new List<SaleDTO>();
+            foreach (Sale sale in sales)
+            {
+                salesDTO.Add(SaleMapToSaleDTO(sale));
+            }
+            return salesDTO;
+        }
+
+        public static SaleDetailDTO SaleDetailMapToSaleDetailDTO(SaleDetail saleDetail)
+        {
+            return new SaleDetailDTO
+            {
+                saleDetailId = saleDetail.SaleDetailId,
+                saleId = saleDetail.SaleId,
+                couponId = saleDetail.CouponId,
+                regularPrice = saleDetail.RegularPrice,
+                percentage = saleDetail.Percentage,
+                quantity = saleDetail.Quantity,
+                subtotal = saleDetail.Subtotal
+            };
+        }
+
+        public static IEnumerable<SaleDetailDTO> SaleDetailsMapToSaleDetailsDTO(IEnumerable<SaleDetail> saleDetails)
+        {
+            List<SaleDetailDTO> saleDetailsDTO = new List<SaleDetailDTO>();
+            foreach (SaleDetail saleDetail in saleDetails)
+            {
+                saleDetailsDTO.Add(SaleDetailMapToSaleDetailDTO(saleDetail));
+            }
+            return saleDetailsDTO;
         }
 
     }

@@ -2,6 +2,7 @@
 using CouponsClient.BW.Interfaces.DA;
 using CouponsClient.DA.Context;
 using CouponsClient.DA.DataModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -84,6 +85,32 @@ namespace CouponsClient.DA.Actions
                     throw;
                 }
             }
+        }
+
+        public async Task<IEnumerable<Sale>> GetSalesByClientId(int clientId)
+        {
+            return await _context.Sales.Where(s => s.id_client == clientId).Select(s => new Sale
+            {
+                SaleId = s.id_sale,
+                ClientId = s.id_client,
+                SaleDate = s.sale_date,
+                CardNumber = s.card_number,
+                Total = s.total
+            }).ToListAsync();
+        }
+
+        public async Task<IEnumerable<SaleDetail>> GetSaleDetailsBySaleId(int saleId)
+        {
+            return await _context.SaleDetails.Where(sd => sd.id_sale == saleId).Select(sd => new SaleDetail
+            {
+                SaleDetailId = sd.id_sale_detail,
+                SaleId = sd.id_sale,
+                CouponId = sd.id_coupon,
+                RegularPrice = sd.regular_price,
+                Percentage = sd.percentage,
+                Quantity = sd.quantity,
+                Subtotal = sd.subtotal
+            }).ToListAsync();
         }
     }
 }

@@ -9,6 +9,8 @@ namespace CouponsClient.BW.Interfaces.BW
 {
     public interface IManageCouponBW
     {
-        Task<IEnumerable<Coupon>> GetCoupons();
+        Task<IEnumerable<Coupon>> GetCouponsWithDetails();
+        Task<Coupon> GetCouponWithDetailsById(int id);
+        Task<IEnumerable<CouponSaleWithDetails>> GetCouponsSaleWithDetailsByClientId(int clientId);
     }
 }

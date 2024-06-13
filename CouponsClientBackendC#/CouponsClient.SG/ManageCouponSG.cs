@@ -19,12 +19,12 @@ namespace CouponsClient.SG
             _httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<Coupon>> GetCoupons()
+        public async Task<IEnumerable<Coupon>> GetCouponsWithDetails()
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(URLCoupons_API.URL + "/CouponController.php");
+            HttpResponseMessage response = await _httpClient.GetAsync(URLCoupons_API.URL + "coupon/getCouponsWithDetails.php");
             if (!response.IsSuccessStatusCode)
             {
-                throw new HttpRequestException($"Cannot retrieve coupons from {URLCoupons_API.URL + "/CouponController.php"}");
+                throw new HttpRequestException($"Cannot retrieve coupons from {URLCoupons_API.URL + "coupon/getCouponsWithDetails.php"}");
             }
 
             var couponsString = await response.Content.ReadAsStringAsync();
@@ -37,6 +37,26 @@ namespace CouponsClient.SG
             var coupons = JsonSerializer.Deserialize<IEnumerable<Coupon>>(couponsString);
 
             return coupons;
+        }
+
+        public async Task<Coupon> GetCouponWithDetailsById(int id)
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync(URLCoupons_API.URL + "coupon/getCouponWithDetailsById.php?id=" + id);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"Cannot retrieve coupon from {URLCoupons_API.URL + "coupon/getCouponWithDetailsById.php?id=" + id}");
+            }
+
+            var couponString = await response.Content.ReadAsStringAsync();
+
+            if (string.IsNullOrEmpty(couponString))
+            {
+                return null;
+            }
+
+            var coupon = JsonSerializer.Deserialize<Coupon>(couponString);
+
+            return coupon;
         }
     }
 }

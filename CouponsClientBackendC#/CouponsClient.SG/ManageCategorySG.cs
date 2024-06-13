@@ -20,10 +20,10 @@ namespace CouponsClient.SG
 
         public async Task<IEnumerable<Category>> GetCategories()
         {
-            HttpResponseMessage response = await _httpClient.GetAsync("CategoryController.php?enabled=1");
+            HttpResponseMessage response = await _httpClient.GetAsync("category/getEnabledCategories.php");
             if (!response.IsSuccessStatusCode)
             {
-                throw new HttpRequestException($"Cannot retrieve categories from {URLCoupons_API.URL + "CategoryController.php?enabled=1"}");
+                throw new HttpRequestException($"Cannot retrieve categories from {URLCoupons_API.URL + "category/getEnabledCategories.php"}");
             }
 
             var categoriesString = await response.Content.ReadAsStringAsync();

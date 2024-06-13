@@ -33,5 +33,33 @@ namespace CouponsClient.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("{clientId}")]
+        public async Task<IActionResult> GetSalesByClientId(int clientId)
+        {
+            try
+            {
+                var sales = await _manageSaleBW.GetSalesByClientId(clientId);
+                return Ok(SaleDTOMapper.SalesMapToSalesDTO(sales));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("GetSaleDetailsBySaleId/{saleId}")]
+        public async Task<IActionResult> GetSaleDetailsBySaleId(int saleId)
+        {
+            try
+            {
+                var saleDetails = await _manageSaleBW.GetSaleDetailsBySaleId(saleId);
+                return Ok(SaleDTOMapper.SaleDetailsMapToSaleDetailsDTO(saleDetails));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

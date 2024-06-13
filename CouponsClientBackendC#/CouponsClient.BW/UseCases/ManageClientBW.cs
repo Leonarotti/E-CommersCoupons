@@ -26,8 +26,8 @@ namespace CouponsClient.BW.UseCases
 
         public async Task<Client> SignIn(LoginClient loginClient)
         {
+
             return await _manageClientDA.SignIn(loginClient);
-            //validaciones
         }
     }
 }
