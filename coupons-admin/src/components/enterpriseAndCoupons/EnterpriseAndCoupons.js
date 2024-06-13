@@ -57,7 +57,7 @@ const EnterpriseAndCoupons = () => {
     }, [enterpriseId]);
 
     const loadCategories = useCallback(() => {
-        categoryService.getCategories()
+        categoryService.getEnabledCategories()
             .then(response => {
                 setCategories(response.data);
             })
@@ -264,6 +264,7 @@ const EnterpriseAndCoupons = () => {
             <table>
                 <thead>
                     <tr>
+                        <th>Code</th>
                         <th>Name</th>
                         <th>Category</th>
                         <th>Location</th>
@@ -277,6 +278,7 @@ const EnterpriseAndCoupons = () => {
                 <tbody>
                     {coupons.map(coupon => (
                         <tr key={coupon.id_coupon}>
+                            <td>{coupon.id_coupon}</td>
                             <td>{coupon.name}</td>
                             <td>{categories.find(category => category.id_category === coupon.id_category)?.name || 'Unknown'}</td>
                             <td>{coupon.location}</td>

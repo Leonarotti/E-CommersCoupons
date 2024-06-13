@@ -13,7 +13,7 @@ const getCategoryById = (id) => {
 const createCategory = (category) => {
     return axios.post(API_URL+"createCategory.php", category)
         .then(response => response)
-        .catch(error => Promise.reject(error.response.data)); // Devuelve el error completo
+        .catch(error => Promise.reject(error.response.data));
 };
 
 const updateCategory = (category) => {
@@ -30,12 +30,22 @@ const deleteCategory = (id) => {
     .catch(error => Promise.reject(error.response.data));
 };
 
+const setCategoryEnabled = (id, isEnabled) => {
+    return axios.put(API_URL+"setCategoryEnabled.php", { id_category: id, is_enabled: isEnabled });
+};
+
+const getEnabledCategories = () => {
+    return axios.get(API_URL+"getEnabledCategories.php");
+}
+
 const categoryService = {
     getCategories,
     getCategoryById,
     createCategory,
     updateCategory,
-    deleteCategory
+    deleteCategory,
+    setCategoryEnabled,
+    getEnabledCategories
 };
 
 export default categoryService;

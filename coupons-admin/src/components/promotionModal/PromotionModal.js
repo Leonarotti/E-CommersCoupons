@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import './PromotionModal.css';
 
-const PromotionModal = ({ isOpen, onRequestClose, promotion, handlePromotionChange, handleSubmit, editMode, backendErrors }) => {
+const PromotionModal = ({ isOpen, onRequestClose, promotion, handlePromotionChange, handleSubmit, editMode, backendErrors, promotions }) => {
     const [errors, setErrors] = useState({});
+
+    const existsActivePromotion = () => {
+        return promotions.some(promotion => promotion.is_enabled);
+    };
 
     const validateForm = () => {
         const errors = {};
@@ -27,6 +31,10 @@ const PromotionModal = ({ isOpen, onRequestClose, promotion, handlePromotionChan
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
+        if (promotion.is_enabled && existsActivePromotion() && !editMode) {
+            setErrors({ ...errors, general: 'There is already an active promotion. Please disable it before creating or enabling a new one.' });
+            return;
+        }
         if (validateForm()) {
             handleSubmit(e);
         }
@@ -42,6 +50,8 @@ const PromotionModal = ({ isOpen, onRequestClose, promotion, handlePromotionChan
         >
             <h2>{editMode ? 'Edit Promotion' : 'Create Promotion'}</h2>
             <form onSubmit={handleFormSubmit}>
+                {backendErrors.general && <div className="error">{backendErrors.general}</div>}
+                {errors.general && <div className="error">{errors.general}</div>}
                 <div className="form-group">
                     <label htmlFor="percentage">Percentage:</label>
                     <input
@@ -84,7 +94,7 @@ const PromotionModal = ({ isOpen, onRequestClose, promotion, handlePromotionChan
                     {errors.end_date && <span className="error">{errors.end_date}</span>}
                 </div>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                     <label htmlFor="is_enabled">Enabled:</label>
                     <input
                         type="checkbox"
@@ -93,7 +103,7 @@ const PromotionModal = ({ isOpen, onRequestClose, promotion, handlePromotionChan
                         checked={promotion.is_enabled}
                         onChange={(e) => handlePromotionChange({ target: { name: 'is_enabled', value: e.target.checked } })}
                     />
-                </div>
+                </div> */}
 
                 <button type="submit">{editMode ? 'Update Promotion' : 'Create Promotion'}</button>
                 <button type="button" onClick={onRequestClose}>Cancel</button>
