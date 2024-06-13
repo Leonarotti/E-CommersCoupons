@@ -40,6 +40,7 @@
 }
 
 .coupon-and-promotions input[type="text"],
+.coupon-and-promotions select,
 .coupon-and-promotions input[type="date"] {
     padding: 10px;
     border: 1px solid #ddd;

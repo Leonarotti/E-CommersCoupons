@@ -68,13 +68,13 @@ const CategoryManagement = () => {
         openModal();
     };
 
-    // const handleEnableToggle = (id, isEnabled) => {
-    //     categoryService.setCategoryEnabled(id, isEnabled).then(() => {
-    //         loadCategories();
-    //     }).catch(error => {
-    //         console.error("Error toggling category enable status:", error);
-    //     });
-    // };
+    const handleEnableToggle = (id, isEnabled) => {
+        categoryService.setCategoryEnabled(id, isEnabled).then(() => {
+            loadCategories();
+        }).catch(error => {
+            console.error("Error toggling category enable status:", error);
+        });
+    };
 
     const openModal = () => {
         setModalIsOpen(true);
@@ -109,10 +109,10 @@ const CategoryManagement = () => {
                         <tr key={category.id_category}>
                             <td>{category.name}</td>
                             <td>
-                                {/* <button onClick={() => handleEnableToggle(category.id_category, !category.is_enabled)}>
+                                <button onClick={() => handleEnableToggle(category.id_category, !category.is_enabled)}>
                                     {category.is_enabled ? 'Disable' : 'Enable'}
-                                </button> */}
-                                <button onClick={() => handleEdit(category)}>Edit</button>
+                                </button>
+                                <button className='btn btn-warning btn-sm' onClick={() => handleEdit(category)}>Edit</button>
                             </td>
                         </tr>
                     ))}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import couponService from '../../services/CouponService';
+import categoryService from '../../services/CategoryService';
 import promotionService from '../../services/PromotionService';
 import PromotionModal from '../promotionModal/PromotionModal';
 import './CouponAndPromotions.css';
@@ -9,6 +10,7 @@ const CouponAndPromotions = () => {
     const { enterpriseId, couponId } = useParams();
     const navigate = useNavigate();
     const [coupon, setCoupon] = useState(null);
+    const [categories, setCategories] = useState([]);
     const [promotions, setPromotions] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -33,6 +35,16 @@ const CouponAndPromotions = () => {
         });
     }, [couponId]);
 
+    const loadCategories = useCallback(() => {
+        categoryService.getEnabledCategories()
+            .then(response => {
+                setCategories(response.data);
+            })
+            .catch(error => {
+                console.error("Error fetching categories:", error);
+            });
+    }, []);
+
     const loadPromotions = useCallback(() => {
         promotionService.getPromotionsByCouponId(couponId).then(response => {
             const promotionsWithBooleans = response.data.map(promotion => ({
@@ -47,7 +59,8 @@ const CouponAndPromotions = () => {
 
     useEffect(() => {
         loadPromotions();
-    }, [loadPromotions]);
+        loadCategories();
+    }, [loadPromotions, loadCategories]);
 
     const handleCouponChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -81,6 +94,26 @@ const CouponAndPromotions = () => {
         setNewPromotion({ ...newPromotion, [name]: type === 'checkbox' ? checked : value });
     };
 
+    const isPromotionWithinCouponDates = (promotion) => {
+        const couponStartDate = new Date(coupon.start_date);
+        const couponEndDate = new Date(coupon.end_date);
+        const promotionStartDate = new Date(promotion.start_date);
+        const promotionEndDate = new Date(promotion.end_date);
+
+        return (
+            promotionStartDate >= couponStartDate &&
+            promotionEndDate <= couponEndDate
+        );
+    };
+
+    const existsActivePromotion = () => {
+        return promotions.some(promotion => promotion.is_enabled);
+    };
+
+    const validatePromotion = (promotion) => {
+        return isPromotionWithinCouponDates(promotion) && (!existsActivePromotion() || (editMode && promotion.is_enabled));
+    };
+
     const handleUpdateCoupon = (e) => {
         e.preventDefault();
         couponService.updateCoupon(coupon)
@@ -95,6 +128,14 @@ const CouponAndPromotions = () => {
     };
 
     const handleOpenModal = () => {
+        if (existsActivePromotion()) {
+            setBackendErrors({
+                ...backendErrors,
+                general: 'There is already an active promotion. Please disable it before creating a new one.'
+            });
+            return;
+        }
+
         setEditMode(false);
         setNewPromotion({
             id_coupon: couponId,
@@ -114,6 +155,14 @@ const CouponAndPromotions = () => {
 
     const handleCreatePromotion = (e) => {
         e.preventDefault();
+        if (!validatePromotion(newPromotion)) {
+            setBackendErrors({
+                ...backendErrors,
+                general: 'Promotion dates must be within the coupon dates and no other active promotion should exist.'
+            });
+            return;
+        }
+
         promotionService.createPromotion(newPromotion)
             .then(response => {
                 console.log("Promotion created successfully:", response.data);
@@ -135,6 +184,14 @@ const CouponAndPromotions = () => {
 
     const handleUpdatePromotion = (e) => {
         e.preventDefault();
+        if (!validatePromotion(newPromotion)) {
+            setBackendErrors({
+                ...backendErrors,
+                general: 'Promotion dates must be within the coupon dates and no other active promotion should exist.'
+            });
+            return;
+        }
+
         promotionService.updatePromotion(newPromotion)
             .then(response => {
                 console.log("Promotion updated successfully:", response.data);
@@ -148,6 +205,14 @@ const CouponAndPromotions = () => {
     };
 
     const handleEnableToggle = (id, isEnabled) => {
+        if (isEnabled && existsActivePromotion()) {
+            setBackendErrors({
+                ...backendErrors,
+                general: 'There is already an active promotion. Please disable it before enabling another one.'
+            });
+            return;
+        }
+
         promotionService.setPromotionEnabled(id, isEnabled).then(() => {
             loadPromotions();
         }).catch(error => {
@@ -177,6 +242,17 @@ const CouponAndPromotions = () => {
                 />
                 {backendErrors.name && <span className="error">{backendErrors.name}</span>}
 
+                <label>Category:</label>
+                <select name="id_category" value={coupon.id_category} onChange={handleCouponChange} disabled={!editMode} required>
+                    <option value="">Select Category</option>
+                    {categories.map(category => (
+                        <option key={category.id_category} value={category.id_category}>
+                            {category.name}
+                        </option>
+                    ))}
+                </select>
+                {backendErrors.id_category && <span className="error">{backendErrors.id_category}</span>}
+
                 <label>Location:</label>
                 <input
                     type="text"
@@ -190,7 +266,7 @@ const CouponAndPromotions = () => {
 
                 <label>Regular price:</label>
                 <input
-                    type="text"
+                    type="number"
                     name="regular_price"
                     value={coupon.regular_price}
                     onChange={handleCouponChange}
@@ -201,7 +277,7 @@ const CouponAndPromotions = () => {
 
                 <label>Percentage:</label>
                 <input
-                    type="text"
+                    type="number"
                     name="percentage"
                     value={coupon.percentage}
                     onChange={handleCouponChange}
@@ -211,10 +287,10 @@ const CouponAndPromotions = () => {
                 {backendErrors.percentage && <span className="error">{backendErrors.percentage}</span>}
 
                 <label>Start date:</label>
-                <input 
-                    type="date" 
-                    name="start_date" 
-                    value={coupon.start_date} 
+                <input
+                    type="date"
+                    name="start_date"
+                    value={coupon.start_date}
                     onChange={handleCouponChange}
                     disabled={!editMode}
                     required
@@ -222,17 +298,17 @@ const CouponAndPromotions = () => {
                 {backendErrors.start_date && <span className="error">{backendErrors.start_date}</span>}
 
                 <label>End date:</label>
-                <input 
-                    type="date" 
-                    name="end_date" 
-                    value={coupon.end_date} 
+                <input
+                    type="date"
+                    name="end_date"
+                    value={coupon.end_date}
                     onChange={handleCouponChange}
                     disabled={!editMode}
                     required
                 />
                 {backendErrors.end_date && <span className="error">{backendErrors.end_date}</span>}
 
-                <label>
+                {/* <label>
                     <input
                         type="checkbox"
                         name="is_enabled"
@@ -241,7 +317,7 @@ const CouponAndPromotions = () => {
                         disabled={!editMode}
                     />
                     Enabled
-                </label>
+                </label> */}
 
                 <label>Image Upload:</label>
                 <input type="file" name="img" accept="image/*" onChange={handleImageUpload} disabled={!editMode} />
@@ -254,7 +330,7 @@ const CouponAndPromotions = () => {
 
             <h2>Promotions</h2>
             <button onClick={handleOpenModal}>Create Promotion</button>
-
+            {backendErrors.general && <div className="error">{backendErrors.general}</div>}
             <table>
                 <thead>
                     <tr>
@@ -271,9 +347,11 @@ const CouponAndPromotions = () => {
                             <td>{promotion.start_date}</td>
                             <td>{promotion.end_date}</td>
                             <td className='table-actions'>
-                                <button onClick={() => handleEnableToggle(promotion.id_promotion, !promotion.is_enabled)}>
-                                    {promotion.is_enabled ? 'Disable' : 'Enable'}
-                                </button>
+                                {coupon.is_enabled && (
+                                    <button onClick={() => handleEnableToggle(promotion.id_promotion, !promotion.is_enabled)}>
+                                        {promotion.is_enabled ? 'Disable' : 'Enable'}
+                                    </button>
+                                )}
                                 <button onClick={() => handleEditPromotion(promotion)} className='edit'>Edit</button>
                             </td>
                         </tr>
@@ -289,6 +367,7 @@ const CouponAndPromotions = () => {
                 handleSubmit={editMode ? handleUpdatePromotion : handleCreatePromotion}
                 editMode={editMode}
                 backendErrors={backendErrors}
+                promotions={promotions}
             />
         </div>
     );
