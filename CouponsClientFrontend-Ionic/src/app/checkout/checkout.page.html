@@ -32,14 +32,12 @@
     </form>
 
     <ion-toast
-      position="bottom"
-      [isOpen]="isToastOpen"
-      message="Su compra ha sido realizada con éxito, recibirá un correo con la factura."
-      [duration]="0"
-      color="dark"
-      translucent="true"
-    >
-      <ion-button (click)="handleToastButtonClick()">Aceptar</ion-button>
-    </ion-toast>
+    position="bottom"
+    [isOpen]="isToastOpen"
+    message="Su compra ha sido realizada con éxito, recibirá un correo con la factura."
+    [duration]="3000"
+    (didDismiss)="handleToastButtonClick()"
+    color="dark"
+  ></ion-toast>
   </ion-content>
 </div>
