@@ -140,7 +140,7 @@ const CouponModal = ({ isOpen, onRequestClose, coupon, handleCouponChange, handl
                 {errors.end_date && <span className="error">{errors.end_date}</span>}
                 {backendErrors.end_date && <span className="error">{backendErrors.end_date}</span>}
                 
-                <strong>
+                {/* <strong>
                     <input
                         type="checkbox"
                         name="is_enabled"
@@ -149,7 +149,7 @@ const CouponModal = ({ isOpen, onRequestClose, coupon, handleCouponChange, handl
                     />
                     Enabled
                 </strong>
-                {backendErrors.is_enabled && <span className="error">{backendErrors.is_enabled}</span>}
+                {backendErrors.is_enabled && <span className="error">{backendErrors.is_enabled}</span>} */}
 
                 <label>Image Upload:</label>
                 <input type="file" name="img" accept="image/*" onChange={handleImageUpload} />

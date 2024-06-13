@@ -74,6 +74,9 @@ class CouponBusiness {
         if (!$this->isValidId($id)) {
             return 'ID de cupón requerido para cambiar estado.';
         }
+        if(!$is_enabled){
+            $this->couponData->disablePromotionsByCouponId($id) ? true : 'Error al cambiar estado de cupón.';
+        }
         return $this->couponData->setEnabled($id, $is_enabled) ? true : 'Error al cambiar estado de cupón.';
     }
 

@@ -81,6 +81,17 @@ class CategoryData {
         return false;
     }
 
+    public function disableCouponsAndPromotionsByCategoryId($id_category) {
+        $query = 'CALL spDisableCouponsAndPromotionsByCategoryId(:id_category)';
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id_category', $id_category, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
     public function getEnabledCategories() {
         $query = 'SELECT * FROM ' . $this->table_name . ' WHERE is_enabled = 1';
         $stmt = $this->conn->prepare($query);
