@@ -92,5 +92,16 @@ class EnterpriseData {
         }
         return false;
     }
+
+    public function disableCouponsAndPromotionsByEnterpriseId($id_enterprise) {
+        $query = 'CALL spDisableCouponsAndPromotionsByEnterpriseId(:id_enterprise)';
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id_enterprise', $id_enterprise, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
 }
 ?>

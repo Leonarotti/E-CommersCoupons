@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-06-2024 a las 18:07:07
+-- Tiempo de generación: 14-06-2024 a las 00:29:19
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -25,6 +25,44 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spDisableCouponsAndPromotionsByCategoryId` (IN `categoryId` INT)   BEGIN
+    -- Deshabilitar cupones asociados a la categoría
+    UPDATE coupon
+    SET is_enabled = 0
+    WHERE id_category = categoryId;
+
+    -- Deshabilitar promociones asociadas a esos cupones
+    UPDATE promotion
+    SET is_enabled = 0
+    WHERE id_coupon IN (
+        SELECT id_coupon
+        FROM coupon
+        WHERE id_category = categoryId
+    );
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spDisableCouponsAndPromotionsByEnterpriseId` (IN `enterpriseId` INT)   BEGIN
+    -- Deshabilitar cupones asociados a la empresa
+    UPDATE coupon
+    SET is_enabled = 0
+    WHERE id_enterprise = enterpriseId;
+
+    -- Deshabilitar promociones asociadas a esos cupones
+    UPDATE promotion
+    SET is_enabled = 0
+    WHERE id_coupon IN (
+        SELECT id_coupon
+        FROM coupon
+        WHERE id_enterprise = enterpriseId
+    );
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spDisablePromotionsByCouponId` (IN `id_coupon` INT)   BEGIN
+    UPDATE promotion
+    SET is_enabled = 0
+    WHERE id_coupon = id_coupon;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetCouponsWithDetails` ()   BEGIN
     SELECT 
         c.id_coupon,
@@ -36,7 +74,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetCouponsWithDetails` ()   BEGIN
         c.img,
         c.location,
         c.regular_price,
-        c.percentage,
+        c.percentage + IFNULL(SUM(p.percentage), 0) AS total_percentage,
         c.start_date,
         c.end_date,
         c.is_enabled
@@ -46,8 +84,27 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetCouponsWithDetails` ()   BEGIN
         enterprise e ON c.id_enterprise = e.id_enterprise
     JOIN 
         category cat ON c.id_category = cat.id_category
-	WHERE 
-        c.is_enabled = 1;
+    LEFT JOIN 
+        promotion p ON c.id_coupon = p.id_coupon 
+            AND p.is_enabled = 1 
+            AND CURDATE() BETWEEN p.start_date AND p.end_date
+    WHERE 
+        c.is_enabled = 1 
+        AND CURDATE() BETWEEN c.start_date AND c.end_date
+    GROUP BY 
+        c.id_coupon,
+        c.id_enterprise,
+        e.name,
+        c.id_category,
+        cat.name,
+        c.name,
+        c.img,
+        c.location,
+        c.regular_price,
+        c.percentage,
+        c.start_date,
+        c.end_date,
+        c.is_enabled;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spGetCouponWithDetailsById` (IN `id_coupon` INT)   BEGIN
@@ -94,9 +151,10 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`id_category`, `name`, `is_enabled`) VALUES
-(1, 'Gastronomía', 0),
+(1, 'Gastronomía', 1),
 (2, 'Turismo', 1),
-(3, 'x', 1);
+(3, 'Entretenimiento', 1),
+(4, 'x', 0);
 
 -- --------------------------------------------------------
 
@@ -123,9 +181,9 @@ CREATE TABLE `coupon` (
 --
 
 INSERT INTO `coupon` (`id_coupon`, `id_enterprise`, `id_category`, `name`, `img`, `location`, `regular_price`, `percentage`, `start_date`, `end_date`, `is_enabled`) VALUES
-(1, 3, 1, 'Cupón para restaurante X', 'https://res.cloudinary.com/dog4dmw2v/image/upload/v1717396716/CouponsImages/hjctlbtbbs6b5mneiv86.jpg', 'Ubicación X', 12000.00, 10, '2024-06-04', '2024-06-08', 1),
+(1, 3, 1, 'Cupón para restaurante X', 'https://res.cloudinary.com/dog4dmw2v/image/upload/v1718308508/CouponsImages/myluz5hqftxc7unfonyk.jpg', 'Italia', 12000.00, 10, '2024-06-04', '2024-06-15', 1),
 (2, 3, 1, 'Cupón para restaurante Z', 'https://res.cloudinary.com/dog4dmw2v/image/upload/v1717404243/CouponsImages/txcx838fsnchfbaobxvw.png', 'Z', 10000.00, 8, '2024-06-07', '2024-06-28', 1),
-(3, 8, 1, 'Cupón para restaurante Y', 'data:image/webp;base64,UklGRiRmAABXRUJQVlA4IBhmAABQOQOdASqwBCADPpFIn0ulpCosorI5iZASCWdu3A/lviJ2GJKcw60Xyryfb1rOf/n+Fn9F3MVQH5dbebz7/0+bez0chSavMnNd6lvvh4Ifm8/ar1T/OuvrDIH/dfos9TssffSUb3R3CODXaOoNPMF0EBFFcdx+woXTiNOfRX6q8XbZQhPVi3GR9HLuE3ItslyD+YFMyKbQ8e0n', 'Y', 100.78, 5, '2024-06-05', '2024-06-22', 1);
+(3, 8, 1, 'Cupón para restaurante Y', 'https://res.cloudinary.com/dog4dmw2v/image/upload/v1718299638/CouponsImages/ffoyxcinxdgm9yl2eisf.jpg', 'Y', 1000.78, 5, '2024-06-05', '2024-06-22', 1);
 
 -- --------------------------------------------------------
 
@@ -150,11 +208,11 @@ CREATE TABLE `enterprise` (
 --
 
 INSERT INTO `enterprise` (`id_enterprise`, `name`, `address`, `license`, `date_created`, `phone`, `email`, `password`, `is_enabled`) VALUES
-(3, 'Tesla', 'San José', '12-345-678909', '2024-05-01', '8489-9918', 'leon.pereira15@gmail.com', '123', 1),
-(8, 'Gama', 'Cartago, Turrialba', '12-3456-7890', '2024-04-30', '8489-9917', 'leon.pereira15@gmail.com', '12345', 1),
-(17, 'Prueba 1', 'Cartago', '12-3456-7894', '2024-05-01', '8489-9917', 'leon.pereira15@gmail.com', '123', 1),
-(21, 'Empresa Ejemplo', '123 Calle X', '12-4568-1234', '2023-05-29', '1234-5678', 'empresa@ejemplo.com', '123456', 1),
-(24, 'Prueba 2', 'San José', '12-345-678900', '2024-05-01', '8489-9917', 'leon.pereira15@gmail.com', '123', 1);
+(3, 'Tesla', 'San Jose', '12-345-678909', '2024-05-01', '8489-9918', 'leon.pereira15@gmail.com', '123', 1),
+(8, 'Gama', 'Cartago, Turrialba', '12-3456-7890', '2024-04-30', '8489-9918', 'leon.pereira15@gmail.com', '12345', 1),
+(17, 'Prueba 1', 'Cartago', '12-3456-7894', '2024-05-01', '8489-9917', 'leon.pereira15@gmail.com', '123', 0),
+(21, 'Empresa Ejemplo', '123 Calle X', '12-4568-1234', '2023-05-29', '1234-5678', 'empresa@ejemplo.com', '123456', 0),
+(24, 'Prueba 2', 'San José', '12-345-678900', '2024-05-01', '8489-9917', 'leon.pereira15@gmail.com', '123', 0);
 
 -- --------------------------------------------------------
 
@@ -176,8 +234,9 @@ CREATE TABLE `promotion` (
 --
 
 INSERT INTO `promotion` (`id_promotion`, `id_coupon`, `percentage`, `start_date`, `end_date`, `is_enabled`) VALUES
-(1, 1, 5, '2024-06-05', '2024-06-15', 1),
-(2, 1, 3, '2024-06-18', '2024-06-21', 1);
+(1, 1, 5, '2024-06-11', '2024-06-15', 1),
+(2, 1, 5, '2024-06-11', '2024-06-15', 0),
+(3, 2, 3, '2024-06-08', '2024-06-20', 0);
 
 --
 -- Índices para tablas volcadas
@@ -220,7 +279,7 @@ ALTER TABLE `promotion`
 -- AUTO_INCREMENT de la tabla `category`
 --
 ALTER TABLE `category`
-  MODIFY `id_category` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_category` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `coupon`
@@ -238,7 +297,7 @@ ALTER TABLE `enterprise`
 -- AUTO_INCREMENT de la tabla `promotion`
 --
 ALTER TABLE `promotion`
-  MODIFY `id_promotion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_promotion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
