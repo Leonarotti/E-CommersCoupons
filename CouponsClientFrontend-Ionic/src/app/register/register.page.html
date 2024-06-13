@@ -9,34 +9,62 @@
   </ion-header>
 
   <ion-content>
-    <ion-list>
-      <ion-item>
-        <ion-label position="floating">DNI</ion-label>
-        <ion-input [(ngModel)]="client.dni"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Nombre</ion-label>
-        <ion-input [(ngModel)]="client.name"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Apellido</ion-label>
-        <ion-input [(ngModel)]="client.lastname"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Fecha de Nacimiento</ion-label>
-        <ion-datetime presentation="date" displayFormat="DD-MM-YYYY" [(ngModel)]="client.birth_date"></ion-datetime>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Correo Electrónico</ion-label>
-        <ion-input [(ngModel)]="client.email"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Contraseña</ion-label>
-        <ion-input type="password" [(ngModel)]="client.password"></ion-input>
-      </ion-item>
-    </ion-list>
-    <ion-button expand="block" (click)="register()">Registrarse</ion-button>
-    <ion-button expand="block" color="medium" routerLink="/login"
-      (click)="clearFields()">Volver</ion-button>
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <ion-list>
+        <ion-item>
+          <ion-label position="floating">DNI</ion-label>
+          <ion-input formControlName="dni"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="registerForm.get('dni')?.touched && registerForm.get('dni')?.invalid">
+          El DNI debe tener el formato 00-0000-0000.
+        </ion-note>
+        <ion-item>
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input formControlName="name"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid">
+          El nombre debe tener máximo 11 caracteres.
+        </ion-note>
+        <ion-item>
+          <ion-label position="floating">Apellido</ion-label>
+          <ion-input formControlName="lastname"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="registerForm.get('lastname')?.touched && registerForm.get('lastname')?.invalid">
+          El apellido debe tener máximo 30 caracteres.
+        </ion-note>
+        <ion-item>
+          <ion-label position="floating">Fecha de Nacimiento</ion-label>
+          <ion-datetime formControlName="birth_date" presentation="date" displayFormat="DD-MM-YYYY"></ion-datetime>
+        </ion-item>
+        <ion-note *ngIf="registerForm.get('birth_date')?.touched && registerForm.get('birth_date')?.invalid">
+          Debe ser mayor de 18 años.
+        </ion-note>
+        <ion-item>
+          <ion-label position="floating">Correo Electrónico</ion-label>
+          <ion-input formControlName="email"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+          El correo electrónico es inválido.
+        </ion-note>
+        <ion-item>
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input type="password" formControlName="password"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+          La contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, una letra minúscula, un número y un carácter especial.
+        </ion-note>
+      </ion-list>
+      <ion-button expand="block" type="submit" [disabled]="registerForm.invalid">Registrarse</ion-button>
+      <ion-button expand="block" color="medium" routerLink="/login" (click)="clearFields()">Volver</ion-button>
+    </form>
+
+    <ion-toast
+    position="bottom"
+    [isOpen]="isToastOpen"
+    message="Registro exitoso!"
+    [duration]="2000"
+    (didDismiss)="setOpen(false)"
+    color="dark"
+  ></ion-toast>
   </ion-content>
 </div>

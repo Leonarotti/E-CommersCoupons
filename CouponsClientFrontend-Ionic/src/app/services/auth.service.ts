@@ -18,7 +18,7 @@ export class AuthService {
   }
 
   encryptPassword(password: string): string {
-    const publicKey = forge.pki.publicKeyFromPem(`-----BEGIN PUBLIC KEY-----
+    const publicKeyPem = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqhNIV5l2G7y/enk+qDu8
 VA0LD2dOTHlzrMFH+a4PIK1kWhxnWWoN6N1wOBrz7haa7nf6WFSt9run2GfaIRxx
 10Ax2YUoLs1QkkzjouuBv1/pvR6hBtvQ7bjTrJTyYiHO2CXn6lPeqxHgK5Aizrls
@@ -27,21 +27,25 @@ fVBUxRoU9U7QuFObr72VLQdcNw2JK2TYKOdTRnG1waL+ZgCaFjtJzbrb3xGCLCni
 0FyVKPuTbVUPaWKIvIetx6abIOQENF25QuZGGY6XUFYYC8O+u1eDHsSJ924qo3ZI
 SQIDAQAB
 -----END PUBLIC KEY-----
-`);
-    const encrypted = publicKey.encrypt(password, 'RSA-OAEP');
-    return forge.util.encode64(encrypted);
-  }
+`;
+const publicKey = forge.pki.publicKeyFromPem(publicKeyPem);
+const encrypted = publicKey.encrypt(password, 'RSA-OAEP', {
+  md: forge.md.sha256.create()
+});
+return forge.util.encode64(encrypted);
+}
 
   register(client: any) {
-    // const encryptedPassword = this.encryptPassword(client.password);
-    // client.password = encryptedPassword;
-    return this.http.post(`${this.apiUrl}/register`, client);
+    let clientCopy = { ...client };
+    const encryptedPassword = this.encryptPassword(client.password);
+    clientCopy.password = encryptedPassword;
+    return this.http.post(`${this.apiUrl}/register`, clientCopy);
   }
 
   login(email: string, password: string) {
-    // const encryptedPassword = this.encryptPassword(password);
-    // return this.http.post(`${this.apiUrl}/signIn`, { email, password: encryptedPassword });
-    return this.http.post(`${this.apiUrl}/signIn`, { email, password});
+    const encryptedPassword = this.encryptPassword(password);
+    console.log(encryptedPassword);
+    return this.http.post(`${this.apiUrl}/signIn`, { email, password: encryptedPassword });
   }
 
   async saveSessionData(key: string, data: any): Promise<void> {

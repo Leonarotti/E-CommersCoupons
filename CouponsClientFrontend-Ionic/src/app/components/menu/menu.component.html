@@ -7,8 +7,10 @@
       <ion-avatar aria-hidden="true" slot="start">
         <img alt="" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
       </ion-avatar>
-      <ion-label>{{client?.name + " " + client?.lastname}}</ion-label>
-      <!-- si usario == null "Anonimo" -->
+      <ion-label *ngIf="client; else anonimo">{{ client?.name + " " + client?.lastname}}</ion-label>
+      <ng-template #anonimo>
+      <ion-label>Anónimo</ion-label>
+      </ng-template>
     </ion-item>
   </ion-header>
   <ion-content class="ion-padding">
@@ -16,18 +18,20 @@
       <ion-item (click)="closeMenu()">
         <ion-label routerLink="/home">Comprar Cupones</ion-label>
       </ion-item>
-      <ion-item>
-        <ion-label (click)="closeMenu()" routerLink="/cart">Carrito de compras</ion-label>
+      <ion-item (click)="closeMenu()" routerLink="/cart">
+        <ion-label>Carrito de compras</ion-label>
       </ion-item>
-      <ion-item>
-        <ion-label (click)="closeMenu()" routerLink="/profile">Mis Cupones</ion-label>
+      <ion-item *ngIf="client" (click)="closeMenu()" routerLink="/my-coupons">
+        <ion-label>Mis Cupones</ion-label>
       </ion-item>
-      <ion-item>
+      <ion-item *ngIf="client; else loginItem">
         <ion-label (click)="closeMenu(); logout()" routerLink="/home" color="danger">Cerrar Sesión</ion-label>
-        <!-- si sesión esta iniciada "Cerrar Sesión" : "Iniciar Sesión" -->
       </ion-item>
+      <ng-template #loginItem>
+        <ion-item (click)="closeMenu()" routerLink="/login">
+          <ion-label color="primary">Iniciar Sesión</ion-label>
+        </ion-item>
+      </ng-template>
     </ion-list>
   </ion-content>
 </ion-menu>
-
-

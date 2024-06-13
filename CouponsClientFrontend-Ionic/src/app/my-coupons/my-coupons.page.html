@@ -1,0 +1,48 @@
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/home"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Mis Cupones</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-md="6" *ngFor="let coupon of purchasedCoupons">
+          <ion-card>
+            <div class="discount-badge">{{ coupon.percentage }}%</div>
+            <img [src]="coupon.img" alt="" />
+            <ion-card-header>
+              <ion-card-title>{{ coupon.name }}</ion-card-title>
+              <ion-card-subtitle>{{ coupon.enterprise }}</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <p>Ubicación: {{ coupon.location }}</p>
+              <p>
+                Precio regular: <span class="strikethrough">{{ coupon.regularPrice | currency }}</span>
+                -> Descuento: {{ coupon.percentage }}%
+              </p>
+              <p>
+                Precio con descuento: {{
+                  (coupon.regularPrice * (1 - coupon.percentage / 100)) | currency
+                }}
+              </p>
+              <ion-button expand="block" (click)="toggleDetails(coupon)">Ver detalles</ion-button>
+              <div *ngIf="coupon.showDetails" class="coupon-details">
+                <p>Cantidad: {{ coupon.quantity }}</p>
+                <p>Subtotal: {{ coupon.subtotal | currency }}</p>
+                <p>Código de Venta: {{ coupon.saleId }}</p>
+                <p>Número de Tarjeta: {{ coupon.cardNumber }}</p>
+                <p>Fecha de Venta: {{ coupon.saleDate | date: 'medium' }}</p>
+                <p>Total: {{ coupon.totalAmount | currency }}</p>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+</div>

@@ -29,6 +29,11 @@ const routes: Routes = [
     loadChildren: () => import('./checkout/checkout.module').then( m => m.CheckoutPageModule),
     canActivate: [AuthGuardService]
   },
+  {
+    path: 'my-coupons',
+    loadChildren: () => import('./my-coupons/my-coupons.module').then( m => m.MyCouponsPageModule),
+    canActivate: [AuthGuardService]
+  },
 ];
 
 @NgModule({
