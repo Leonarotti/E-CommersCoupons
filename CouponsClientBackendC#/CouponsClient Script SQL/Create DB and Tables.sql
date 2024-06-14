@@ -12,7 +12,7 @@ CREATE TABLE client (
     lastname VARCHAR(30) NOT NULL,
     birth_date DATE NOT NULL,
     email VARCHAR(100) NOT NULL,
-    [password] VARCHAR(MAX) NOT NULL
+    [password] NVARCHAR(MAX) NOT NULL
 );
 
 CREATE TABLE sale (
