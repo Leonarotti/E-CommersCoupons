@@ -46,5 +46,5 @@ Este proyecto consiste en el desarrollo de una plataforma completa para la **ven
 
 ---
 
-## 🗓️ **Tiempo Limitado:** Elaborado individualmente en menos de 2 semanas.
-## 🎓 **Curso:** IF4101 - Lenguajes Para Aplicaciones Comerciales  
+- 🗓️ **Tiempo Limitado:** Elaborado individualmente en menos de 2 semanas.
+- 🎓 **Curso:** IF4101 - Lenguajes Para Aplicaciones Comerciales  
